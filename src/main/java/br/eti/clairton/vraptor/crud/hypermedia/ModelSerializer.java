@@ -28,7 +28,7 @@ public class ModelSerializer extends
 	private final JpaSerializer<Model> jpaSerializer;
 
 	@Inject
-	public ModelSerializer(final HypermediableRule<Model> navigator,
+	public ModelSerializer(final HypermediableRule navigator,
 			@Operation String operation, @Resource String resource) {
 		super(new Mirror());
 

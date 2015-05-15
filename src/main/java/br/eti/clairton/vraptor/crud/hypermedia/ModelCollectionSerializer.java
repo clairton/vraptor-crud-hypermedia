@@ -13,7 +13,7 @@ public class ModelCollectionSerializer extends
 		HypermediableCollectionSerializer<Model> implements
 		JsonSerializer<Collection<Model>> {
 
-	public ModelCollectionSerializer(HypermediableRule<Model> navigator,
+	public ModelCollectionSerializer(HypermediableRule navigator,
 			String operation, String resource, Inflector inflector) {
 		super(navigator, operation, resource, inflector);
 	}

@@ -15,7 +15,7 @@ import com.google.gson.JsonSerializer;
 public class HypermediableProducer {
 	@Produces
 	public JsonSerializer<Collection<Model>> getSerializerCollection(
-			final HypermediableRule<Model> navigator,
+			final HypermediableRule navigator,
 			final @Operation String operation, final @Resource String resource,
 			Inflector inflector) {
 		return new ModelCollectionSerializer(navigator, operation, resource,
