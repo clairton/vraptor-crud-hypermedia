@@ -9,7 +9,7 @@ import br.eti.clairton.vraptor.hypermedia.HypermediableRule;
 
 import com.google.gson.JsonSerializer;
 
-class ModelCollectionSerializer extends
+public class ModelCollectionSerializer extends
 		HypermediableCollectionSerializer<Model> implements
 		JsonSerializer<Collection<Model>> {
 

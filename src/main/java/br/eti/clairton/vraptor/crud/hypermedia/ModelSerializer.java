@@ -21,7 +21,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 @Specializes
-class ModelSerializer extends
+public class ModelSerializer extends
 		br.eti.clairton.vraptor.crud.serializer.ModelSerializer implements
 		JsonSerializer<Model> {
 	private final HypermediableSerializer<Model> delegate;
