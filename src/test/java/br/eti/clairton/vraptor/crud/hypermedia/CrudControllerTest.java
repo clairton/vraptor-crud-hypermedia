@@ -81,5 +81,4 @@ public class CrudControllerTest {
 		assertEquals(1, links.size());
 		assertEquals(Double.valueOf(id), aplicacao.get("id"));
 	}
-
 }

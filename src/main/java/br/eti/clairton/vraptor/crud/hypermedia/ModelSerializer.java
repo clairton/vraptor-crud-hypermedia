@@ -2,6 +2,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import java.lang.reflect.Type;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Specializes;
 import javax.inject.Inject;
 
@@ -21,6 +22,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 @Specializes
+@Dependent
 public class ModelSerializer extends
 		br.eti.clairton.vraptor.crud.serializer.ModelSerializer implements
 		JsonSerializer<Model> {
@@ -29,9 +31,8 @@ public class ModelSerializer extends
 
 	@Inject
 	public ModelSerializer(final HypermediableRule navigator,
-			@Operation String operation, @Resource String resource) {
+			@Resource String resource, @Operation String operation) {
 		super(new Mirror());
-
 		jpaSerializer = new JpaSerializer<Model>(new Mirror(),
 				LogManager.getLogger(JpaSerializer.class)) {
 		};
