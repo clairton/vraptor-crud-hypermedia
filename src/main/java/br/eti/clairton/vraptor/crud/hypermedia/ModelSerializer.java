@@ -31,8 +31,8 @@ public class ModelSerializer implements JsonSerializer<Model> {
 		serializer = new JpaSerializer<Model>(new Mirror(),
 				LogManager.getLogger(JpaSerializer.class)) {
 		};
-		delegate = new HypermediableSerializer<Model>(navigator, operation,
-				resource, serializer) {
+		delegate = new HypermediableSerializer<Model>(navigator, resource,
+				operation, serializer) {
 		};
 	}
 
