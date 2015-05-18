@@ -2,8 +2,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import java.lang.reflect.Type;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Specializes;
+import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 
 import net.vidageek.mirror.dsl.Mirror;
@@ -21,29 +20,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-@Specializes
-@Dependent
-public class ModelSerializer extends
-		br.eti.clairton.vraptor.crud.serializer.ModelSerializer implements
-		JsonSerializer<Model> {
+@Vetoed
+public class ModelSerializer implements JsonSerializer<Model> {
 	private final HypermediableSerializer<Model> delegate;
-	private final JpaSerializer<Model> jpaSerializer;
+	private final JpaSerializer<Model> serializer;
 
 	@Inject
 	public ModelSerializer(final HypermediableRule navigator,
-			@Resource String resource, @Operation String operation) {
-		super(new Mirror());
-		jpaSerializer = new JpaSerializer<Model>(new Mirror(),
+			final @Resource String resource, final @Operation String operation) {
+		serializer = new JpaSerializer<Model>(new Mirror(),
 				LogManager.getLogger(JpaSerializer.class)) {
 		};
 		delegate = new HypermediableSerializer<Model>(navigator, operation,
-				resource, jpaSerializer) {
+				resource, serializer) {
 		};
 	}
 
-	@Override
-	public void addIgnoredField(String field) {
-		jpaSerializer.addIgnoredField(field);
+	public void addIgnoredField(final String field) {
+		serializer.addIgnoredField(field);
 	}
 
 	@Override

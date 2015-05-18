@@ -139,12 +139,12 @@ public class Producer {
 				put("Pass", new HashMap<String, List<String>>() {
 					private static final long serialVersionUID = 1L;
 					{
-						put("aplicacao", Arrays.asList("create", "update"));
+						put("aplicacao", Arrays.asList("create", "update", "show", "edit"));
 					}
 				});
 			}
 		};
-		Map<String, Map<String, Map<String, List<String>>>> authorizations = new HashMap<String, Map<String, Map<String, List<String>>>>();
+		final Map<String, Map<String, Map<String, List<String>>>> authorizations = new HashMap<String, Map<String, Map<String, List<String>>>>();
 		authorizations.put("admin", roles);
 		return new GateInMemory();
 	}

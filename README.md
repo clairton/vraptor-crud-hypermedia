@@ -1,5 +1,5 @@
-# vraptor-crud-hypermediable[![Build Status](https://drone.io/github.com/clairton/vraptor-crud-hypermediable/status.png)](https://drone.io/github.com/clairton/vraptor-crud-hypermediable/latest)
-Plugin Vraptor para juntar o projetos vraptor-crud e vraptor-hypermediable.
+# vraptor-crud-hypermedia[![Build Status](https://drone.io/github.com/clairton/vraptor-crud-hypermedia/status.png)](https://drone.io/github.com/clairton/vraptor-crud-hypermedia/latest)
+Plugin Vraptor para juntar o projetos vraptor-crud e vraptor-hypermedia.
 Se usar o maven, será necessário adicionar os repositórios:
 ```xml
 <repository>
@@ -15,7 +15,7 @@ Se usar o maven, será necessário adicionar os repositórios:
 ```xml
 <dependency>
     <groupId>br.eti.clairton</groupId>
-    <artifactId>vraptor-crud-hypermediable</artifactId>
+    <artifactId>vraptor-crud-hypermedia</artifactId>
     <version>0.1.0-SNAPSHOT</version><!--Ou versão mais recente-->
 </dependency>
 ```

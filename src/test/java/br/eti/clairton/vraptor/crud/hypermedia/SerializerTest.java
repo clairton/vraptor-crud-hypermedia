@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
@@ -45,6 +45,13 @@ public class SerializerTest {
 		assertEquals(model.name, map.get("name"));
 		assertTrue(map.containsKey("links"));
 	}
+
+	@Produces
+	public JsonSerializer<TestModel> getSerializer(
+			final HypermediableRule navigator,
+			final @Operation String operation, final @Resource String resource) {
+		return new TestModelSerialize(navigator, resource, operation);
+	}
 }
 
 class TestModel extends Model {
@@ -54,7 +61,6 @@ class TestModel extends Model {
 }
 
 @RegisterStrategy(RegisterType.SINGLE)
-@Dependent
 class TestModelSerialize implements JsonSerializer<TestModel> {
 	private final ModelSerializer delegate;
 

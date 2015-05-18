@@ -12,7 +12,6 @@ import br.eti.clairton.vraptor.hypermedia.Resource;
 
 import com.google.gson.JsonSerializer;
 
-
 public class HypermediableProducer {
 	@Produces
 	public JsonSerializer<Collection<Model>> getSerializerCollection(
@@ -22,5 +21,13 @@ public class HypermediableProducer {
 		return new ModelCollectionSerializer(navigator, operation, resource,
 				inflector);
 	}
-	
+
+	@Produces
+	public JsonSerializer<Model> getSerializer(
+			final HypermediableRule navigator,
+			final @Operation String operation, final @Resource String resource,
+			Inflector inflector) {
+		return new ModelSerializer(navigator, operation, resource);
+	}
+
 }

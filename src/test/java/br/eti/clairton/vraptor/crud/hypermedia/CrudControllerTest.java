@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +58,7 @@ public class CrudControllerTest {
 		final VRaptorTestResult result = flow.execute();
 		assertEquals(200, result.getResponse().getStatus());
 		final String response = result.getResponseBody();
-		final Map<?, ?> o = gson.fromJson(response, HashMap.class);
+		final Map<?, ?> o = gson.fromJson(response, Map.class);
 		assertNotNull(o);
 		final List<?> aplicacoes = (List<?>) o.get("aplicacoes");
 		assertNotNull(aplicacoes);
@@ -70,11 +69,11 @@ public class CrudControllerTest {
 
 	@Test
 	public void testShow() {
-		final UserFlow flow = navigate().get("/aplicacoes/" + id);
+		final UserFlow flow = navigate().get("/aplicacoes/" + id + "/edit");
 		final VRaptorTestResult result = flow.execute();
 		assertEquals(200, result.getResponse().getStatus());
 		final String response = result.getResponseBody();
-		final Map<?, ?> o = gson.fromJson(response, HashMap.class);
+		final Map<?, ?> o = gson.fromJson(response, Map.class);
 		final Map<?, ?> aplicacao = (Map<?, ?>) o.get("aplicacao");
 		assertEquals("Testezinho", aplicacao.get("nome"));
 		final List<?> links = (List<?>) aplicacao.get("links");
