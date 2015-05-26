@@ -2,6 +2,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
@@ -33,8 +34,14 @@ public class PaginatedCollectionSerializer<T, X> implements JsonSerializer<Pagin
 	public JsonElement serialize(final PaginatedCollection<T, X> src, final Type type, final JsonSerializationContext context) {
 		@SuppressWarnings("unchecked")
 		final PaginatedCollection<Model, X> collection = (PaginatedCollection<Model, X>) src;
-		final JsonObject json = (JsonObject) delegate.serialize(collection, type, context);
-		json.add("meta", context.serialize(src.unwrap(Meta.class)));
+		final JsonElement json = delegate.serialize(collection, type, context);
+		final Iterator<T> iterator = src.iterator();
+		if(iterator.hasNext() && Model.class.isInstance(iterator.next())){
+			final JsonObject object = (JsonObject) json;
+			final Meta meta = src.unwrap(Meta.class);
+			final JsonElement element = context.serialize(meta);
+			object.add("meta", element);
+		}
 		return json;
 	}
 }
