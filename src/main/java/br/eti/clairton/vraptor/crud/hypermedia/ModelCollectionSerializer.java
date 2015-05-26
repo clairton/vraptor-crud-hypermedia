@@ -17,8 +17,8 @@ public class ModelCollectionSerializer extends
 		JsonSerializer<Collection<Model>> {
 
 	public ModelCollectionSerializer(HypermediableRule navigator,
-			String operation, String resource, Inflector inflector) {
-		super(navigator, operation, resource, inflector);
+			String resource, String operation, Inflector inflector) {
+		super(navigator, resource, operation, inflector);
 	}
 
 	@Override

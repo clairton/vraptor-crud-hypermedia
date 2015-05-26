@@ -65,6 +65,9 @@ public class CrudControllerTest {
 		assertEquals(2, aplicacoes.size());
 		final List<?> links = (List<?>) o.get("links");
 		assertEquals(1, links.size());
+		final Map<?, ?> meta = (Map<?, ?>) o.get("meta");
+		assertEquals(Double.valueOf("2.0"), meta.get("total"));
+		assertEquals(Double.valueOf("0.0"), meta.get("page"));
 	}
 
 	@Test
