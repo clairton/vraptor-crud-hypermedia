@@ -3,6 +3,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 
 import br.eti.clairton.repository.Meta;
@@ -14,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+@Vetoed
 public class PaginatedCollectionSerializer<T, X> implements JsonSerializer<PaginatedCollection<T, X>> {
 	private JsonSerializer<Collection<Model>> delegate;
 	

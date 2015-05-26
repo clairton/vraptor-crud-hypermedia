@@ -12,6 +12,7 @@ import javax.enterprise.util.AnnotationLiteral;
 import net.vidageek.mirror.dsl.Mirror;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.repository.Model;
+import br.eti.clairton.repository.PaginatedCollection;
 import br.eti.clairton.vraptor.crud.serializer.Producer;
 import br.eti.clairton.vraptor.hypermedia.HypermediableRule;
 import br.eti.clairton.vraptor.hypermedia.Operation;
@@ -34,6 +35,12 @@ public class HypermediableProducer extends Producer {
 			Inflector inflector) {
 		return new ModelCollectionSerializer(navigator, operation, resource,
 				inflector);
+	}
+
+	@Produces
+	public <T, X> JsonSerializer<PaginatedCollection<T, X>> PaginatedCollection(
+			final JsonSerializer<Collection<Model>> delegate) {
+		return new PaginatedCollectionSerializer<T, X>(delegate);
 	}
 
 	@Override
