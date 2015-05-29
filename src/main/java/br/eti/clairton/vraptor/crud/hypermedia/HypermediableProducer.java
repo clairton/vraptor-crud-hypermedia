@@ -11,7 +11,7 @@ import javax.enterprise.util.AnnotationLiteral;
 
 import net.vidageek.mirror.dsl.Mirror;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
-import br.eti.clairton.gson.hypermedia.PaginatedCollectionSerializer;
+import br.eti.clairton.gson.hypermedia.HypermediablePaginatedCollectionSerializer;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
@@ -40,7 +40,7 @@ public class HypermediableProducer extends
 	@Produces
 	public JsonSerializer<PaginatedCollection<Model, Meta>> PaginatedCollection(
 			final JsonSerializer<Collection<Model>> delegate) {
-		return new PaginatedCollectionSerializer<Model, Meta>(delegate);
+		return new HypermediablePaginatedCollectionSerializer<Model, Meta>(delegate);
 	}
 
 	@Produces
