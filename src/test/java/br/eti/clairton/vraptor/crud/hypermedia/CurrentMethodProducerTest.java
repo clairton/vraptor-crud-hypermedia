@@ -26,23 +26,4 @@ public class CurrentMethodProducerTest {
 	public void testGetResourceWithoutFirstSlash() {
 		assertEquals("aplicacoes", getResource("aplicacoes?per_page=1"));
 	}
-
-	// @Test
-	// public void testGetResourceNested() {
-	// assertEquals("aplicacao", getResource("/another/aplicacoes", inflector));
-	// }
-	//
-	// @Test
-	// public void testGetResourceNestedPathParam() {
-	// assertEquals("aplicacao",
-	// getResource("/another/aplicacoes/123", inflector));
-	// }
-	//
-	// @Test
-	// public void testGetResourceNestedPathParamAndQueryParam() {
-	// assertEquals(
-	// "aplicacao",
-	// getResource("/another/aplicacoes/123?page=1&per_page=10",
-	// inflector));
-	// }
 }

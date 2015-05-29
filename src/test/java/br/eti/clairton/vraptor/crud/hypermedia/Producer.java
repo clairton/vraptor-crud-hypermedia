@@ -36,8 +36,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mockito.Mockito;
 
-import com.google.gson.JsonSerializer;
-
 import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
@@ -51,8 +49,12 @@ import br.eti.clairton.security.Lock;
 import br.eti.clairton.security.LockInMemory;
 import br.eti.clairton.security.Locksmith;
 import br.eti.clairton.security.LocksmithInMemory;
+import br.eti.clairton.security.Operation;
+import br.eti.clairton.security.Resource;
 import br.eti.clairton.security.Token;
 import br.eti.clairton.security.User;
+
+import com.google.gson.JsonSerializer;
 
 @Priority(Interceptor.Priority.LIBRARY_BEFORE + 1)
 @RequestScoped

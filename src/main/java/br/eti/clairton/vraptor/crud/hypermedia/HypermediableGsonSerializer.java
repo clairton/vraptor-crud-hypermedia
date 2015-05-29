@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.inject.Vetoed;
-import javax.enterprise.util.AnnotationLiteral;
 
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.serialization.Serializer;
@@ -23,6 +22,8 @@ import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
+import br.eti.clairton.security.Operation;
+import br.eti.clairton.security.Resource;
 
 import com.google.gson.Gson;
 
@@ -33,11 +34,29 @@ import com.google.gson.Gson;
  */
 @Vetoed
 public class HypermediableGsonSerializer extends GsonSerializer {
-	private final Annotation oQ = new AnnotationLiteral<Operation>() {
-		private static final long serialVersionUID = 1L;
+	private final Resource rQ = new Resource() {
+
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return Resource.class;
+		}
+
+		@Override
+		public String value() {
+			return "";
+		}
 	};
-	private final Annotation rQ = new AnnotationLiteral<Resource>() {
-		private static final long serialVersionUID = 1L;
+	private final Operation oQ = new Operation() {
+
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return Operation.class;
+		}
+
+		@Override
+		public String value() {
+			return "";
+		}
 	};
 	private final GsonSerializerBuilder builder;
 	private final Writer writer;
@@ -56,35 +75,39 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 	public <T> Serializer from(final T object, final String alias) {
 		super.from(object, alias);
 		if (Collection.class.isInstance(object)) {
-			//se a coleção estiver vazia, deve ser usado o root
+			// se a coleção estiver vazia, deve ser usado o root
 			final Collection<?> collection = (Collection<?>) object;
 			builder.setWithoutRoot(!collection.isEmpty());
 		}
 		return this;
 	}
-	
+
 	@Override
 	public void serialize() {
 		final Object object = builder.getSerializee().getRoot();
 		if (Collection.class.isInstance(object)) {
 			final Collection<?> collection = (Collection<?>) object;
-			if(collection.isEmpty()){
-				builder.setExclusionStrategies(new Exclusions(builder.getSerializee()));
+			if (collection.isEmpty()) {
+				builder.setExclusionStrategies(new Exclusions(builder
+						.getSerializee()));
 				final Gson gson = builder.create();
 				final String alias = builder.getAlias();
 				final Map<String, Object> map = new HashMap<>();
 				map.put(alias, object);
 				final Class<HypermediableRule> t = HypermediableRule.class;
 				final HypermediableRule navigator = current().select(t).get();
-				final String operation = current().select(String.class, oQ).get();
-				final String resource = current().select(String.class, rQ).get();
-				final Set<Link> links = navigator.from(Collections.emptyList(), resource, operation);
+				final String operation = current().select(String.class, oQ)
+						.get();
+				final String resource = current().select(String.class, rQ)
+						.get();
+				final Set<Link> links = navigator.from(Collections.emptyList(),
+						resource, operation);
 				map.put("links", links);
-				if(PaginatedCollection.class.isInstance(object)){
+				if (PaginatedCollection.class.isInstance(object)) {
 					final PaginatedCollection<?, ?> paginated = (PaginatedCollection<?, ?>) object;
 					final Meta meta = paginated.unwrap(Meta.class);
 					map.put("meta", meta);
-				}				
+				}
 				gson.toJson(map, writer);
 				flushQuietly(writer);
 				return;

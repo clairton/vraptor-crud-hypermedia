@@ -7,19 +7,25 @@ import javax.inject.Inject;
 import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.http.MutableRequest;
 import br.eti.clairton.inflector.Inflector;
+import br.eti.clairton.security.Extractor;
+import br.eti.clairton.security.Operation;
+import br.eti.clairton.security.Resource;
 
 @Dependent
 public class CurrentResource {
 	private final MutableRequest request;
 	private final ControllerMethod method;
 	private final Inflector inflector;
+	private final Extractor extractor;
 
 	@Inject
 	public CurrentResource(final MutableRequest request,
-			final ControllerMethod method, final Inflector inflector) {
+			final ControllerMethod method, final Inflector inflector,
+			final Extractor extractor) {
 		this.request = request;
 		this.method = method;
 		this.inflector = inflector;
+		this.extractor = extractor;
 	}
 
 	@Produces
@@ -33,11 +39,7 @@ public class CurrentResource {
 	@Produces
 	@Operation
 	public String getOperation() {
-		return getOperation(method);
-	}
-
-	private String getOperation(ControllerMethod method) {
-		return method.getMethod().getName();
+		return extractor.getOperation(method.getMethod());
 	}
 
 	public static String getResource(final String uri) {

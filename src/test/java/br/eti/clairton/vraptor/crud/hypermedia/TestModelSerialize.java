@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 import br.com.caelum.vraptor.serialization.gson.RegisterStrategy;
 import br.com.caelum.vraptor.serialization.gson.RegisterType;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.security.Operation;
+import br.eti.clairton.security.Resource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
