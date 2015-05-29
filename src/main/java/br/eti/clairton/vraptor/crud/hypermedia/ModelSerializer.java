@@ -3,7 +3,6 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 import java.lang.reflect.Type;
 
 import javax.enterprise.inject.Vetoed;
-import javax.inject.Inject;
 
 import net.vidageek.mirror.dsl.Mirror;
 
@@ -23,7 +22,6 @@ public class ModelSerializer implements JsonSerializer<Model> {
 	private final HypermediableSerializer<Model> delegate;
 	private final JpaSerializer<Model> serializer;
 
-	@Inject
 	public ModelSerializer(final HypermediableRule navigator,
 			final @Resource String resource, final @Operation String operation) {
 		serializer = new JpaSerializer<Model>(new Mirror(),

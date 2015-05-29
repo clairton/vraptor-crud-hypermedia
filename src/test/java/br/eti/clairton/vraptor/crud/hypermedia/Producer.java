@@ -16,7 +16,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Priority;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -35,14 +34,12 @@ import net.vidageek.mirror.dsl.Mirror;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.mockito.Mockito;
 
-import br.com.caelum.vraptor.http.MutableRequest;
-import br.com.caelum.vraptor.http.MutableResponse;
-import br.com.caelum.vraptor.http.VRaptorRequest;
-import br.com.caelum.vraptor.http.VRaptorResponse;
+import com.google.gson.JsonSerializer;
+
 import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
+import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.inflector.Language;
 import br.eti.clairton.inflector.Locale;
@@ -96,20 +93,6 @@ public class Producer {
 		};
 	}
 
-	@javax.enterprise.inject.Produces
-	@Alternative
-	@RequestScoped
-	public MutableResponse getResponse() {
-		return new VRaptorResponse(response);
-	}
-
-	@javax.enterprise.inject.Produces
-	@Alternative
-	@RequestScoped
-	public MutableRequest getRequest() {
-		return new VRaptorRequest(new MockHttpServletRequest());
-	}
-
 	@Produces
 	public EntityManager getEm() {
 		return em;
@@ -123,6 +106,13 @@ public class Producer {
 	@Produces
 	public Cache getCache() {
 		return Mockito.mock(Cache.class);
+	}
+
+	@Produces
+	public JsonSerializer<TestModel> getSerializer(
+			final HypermediableRule navigator,
+			final @Operation String operation, final @Resource String resource) {
+		return new TestModelSerialize(navigator, resource, operation);
 	}
 
 	@Produces
