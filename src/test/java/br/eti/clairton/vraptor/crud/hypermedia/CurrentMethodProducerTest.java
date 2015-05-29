@@ -5,32 +5,26 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import br.eti.clairton.inflector.Inflector;
-import br.eti.clairton.inflector.Locale;
-
 public class CurrentMethodProducerTest {
-	private Inflector inflector = Inflector.getForLocale(Locale.pt_BR);
 
 	@Test
 	public void testGetResourceOnly() {
-		assertEquals("aplicacao", getResource("/aplicacoes", inflector));
+		assertEquals("aplicacoes", getResource("/aplicacoes"));
 	}
 
 	@Test
 	public void testGetResourcePathParam() {
-		assertEquals("aplicacao", getResource("/aplicacoes/123", inflector));
+		assertEquals("aplicacoes", getResource("/aplicacoes/123"));
 	}
 
 	@Test
 	public void testGetResourceQueryParam() {
-		assertEquals("aplicacao",
-				getResource("/aplicacoes?per_page=1", inflector));
+		assertEquals("aplicacoes", getResource("/aplicacoes?per_page=1"));
 	}
 
 	@Test
 	public void testGetResourceWithoutFirstSlash() {
-		assertEquals("aplicacao",
-				getResource("aplicacoes?per_page=1", inflector));
+		assertEquals("aplicacoes", getResource("aplicacoes?per_page=1"));
 	}
 
 	// @Test

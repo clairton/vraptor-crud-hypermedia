@@ -9,12 +9,10 @@ import net.vidageek.mirror.dsl.Mirror;
 
 import org.apache.logging.log4j.LogManager;
 
+import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.gson.hypermedia.HypermediableSerializer;
 import br.eti.clairton.jpa.serializer.JpaSerializer;
 import br.eti.clairton.repository.Model;
-import br.eti.clairton.vraptor.hypermedia.HypermediableRule;
-import br.eti.clairton.vraptor.hypermedia.HypermediableSerializer;
-import br.eti.clairton.vraptor.hypermedia.Operation;
-import br.eti.clairton.vraptor.hypermedia.Resource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;

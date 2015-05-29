@@ -6,8 +6,8 @@ import java.util.Set;
 
 import javax.enterprise.context.Dependent;
 
-import br.eti.clairton.vraptor.hypermedia.HypermediableRule;
-import br.eti.clairton.vraptor.hypermedia.Link;
+import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.gson.hypermedia.Link;
 
 @Dependent
 public class HypermediableRuleStub implements HypermediableRule {

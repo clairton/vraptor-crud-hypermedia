@@ -6,21 +6,18 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.Specializes;
 import javax.enterprise.util.AnnotationLiteral;
 
 import net.vidageek.mirror.dsl.Mirror;
+import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.gson.hypermedia.PaginatedCollectionSerializer;
 import br.eti.clairton.inflector.Inflector;
+import br.eti.clairton.paginated.collection.PaginatedCollection;
 import br.eti.clairton.repository.Model;
-import br.eti.clairton.repository.PaginatedCollection;
-import br.eti.clairton.vraptor.crud.serializer.Producer;
-import br.eti.clairton.vraptor.hypermedia.HypermediableRule;
-import br.eti.clairton.vraptor.hypermedia.Operation;
-import br.eti.clairton.vraptor.hypermedia.Resource;
 
 import com.google.gson.JsonSerializer;
 
-public class HypermediableProducer extends Producer {
+public class HypermediableProducer {
 	private final Annotation oQ = new AnnotationLiteral<Operation>() {
 		private static final long serialVersionUID = 1L;
 	};
@@ -40,12 +37,17 @@ public class HypermediableProducer extends Producer {
 	@Produces
 	public <T, X> JsonSerializer<PaginatedCollection<T, X>> PaginatedCollection(
 			final JsonSerializer<Collection<Model>> delegate) {
-		return new PaginatedCollectionSerializer<T, X>(delegate);
+		JsonSerializer<Collection<T>> serializer = getSerializer(delegate);
+		return new PaginatedCollectionSerializer<T, X>(serializer);
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
+	private <T> JsonSerializer<Collection<T>> getSerializer(
+			JsonSerializer<?> delegate) {
+		return (JsonSerializer<Collection<T>>) delegate;
+	}
+
 	@Produces
-	@Specializes
 	public JsonSerializer<Model> serializer(Mirror mirror) {
 		final Class<HypermediableRule> t = HypermediableRule.class;
 		final HypermediableRule navigator = current().select(t).get();

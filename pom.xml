@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.eti.clairton</groupId>
   <artifactId>vraptor-crud-hypermedia</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
 	<properties>
 		<deltaspike.version>1.3.0</deltaspike.version>
 	</properties>
@@ -52,12 +52,18 @@
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>vraptor-crud</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
-			<artifactId>vraptor-hypermedia</artifactId>
+			<artifactId>gson-hypermedia</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.eti.clairton</groupId>
+			<artifactId>paginated-collection</artifactId>
 			<version>0.1.0</version>
 			<scope>provided</scope>
 		</dependency>
@@ -70,7 +76,7 @@
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>repository</artifactId>
-			<version>0.1.0</version>
+			<version>0.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -229,6 +235,9 @@
 					<encoding>UTF-8</encoding>
 					<source>1.8</source>
 					<target>1.8</target>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>

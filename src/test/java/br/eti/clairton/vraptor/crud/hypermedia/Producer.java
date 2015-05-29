@@ -1,15 +1,26 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Priority;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.interceptor.Interceptor;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.persistence.Cache;
@@ -17,14 +28,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.metamodel.Metamodel;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import net.vidageek.mirror.dsl.Mirror;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.mockito.Mockito;
 
+import br.com.caelum.vraptor.http.MutableRequest;
+import br.com.caelum.vraptor.http.MutableResponse;
+import br.com.caelum.vraptor.http.VRaptorRequest;
+import br.com.caelum.vraptor.http.VRaptorResponse;
+import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.inflector.Language;
 import br.eti.clairton.inflector.Locale;
@@ -39,6 +57,8 @@ import br.eti.clairton.security.LocksmithInMemory;
 import br.eti.clairton.security.Token;
 import br.eti.clairton.security.User;
 
+@Priority(Interceptor.Priority.LIBRARY_BEFORE + 1)
+@RequestScoped
 public class Producer {
 	public static final String TENANT = "valorQueNãoPodeAparecer";
 
@@ -50,11 +70,44 @@ public class Producer {
 
 	private AttributeBuilder attributeBuilder;
 
+	public static HttpServletResponse response;
+
 	@PostConstruct
-	public void init() {
+	public void init() throws Exception {
 		emf = Persistence.createEntityManagerFactory("default");
 		em = emf.createEntityManager();
 		attributeBuilder = new AttributeBuilder(em);
+		final File file = new File("target/test" + new Date().getTime());
+		final OutputStream outputStream = new FileOutputStream(file);
+		final PrintWriter writer = new PrintWriter(outputStream);
+		response = new MockHttpServletResponse() {
+
+			public java.io.PrintWriter getWriter() {
+				return writer;
+			}
+
+			public String toString() {
+				try {
+					return new String(Files.readAllBytes(file.toPath()));
+				} catch (IOException e) {
+					return super.toString();
+				}
+			}
+		};
+	}
+
+	@javax.enterprise.inject.Produces
+	@Alternative
+	@RequestScoped
+	public MutableResponse getResponse() {
+		return new VRaptorResponse(response);
+	}
+
+	@javax.enterprise.inject.Produces
+	@Alternative
+	@RequestScoped
+	public MutableRequest getRequest() {
+		return new VRaptorRequest(new MockHttpServletRequest());
 	}
 
 	@Produces
@@ -139,7 +192,8 @@ public class Producer {
 				put("Pass", new HashMap<String, List<String>>() {
 					private static final long serialVersionUID = 1L;
 					{
-						put("aplicacao", Arrays.asList("create", "update", "show", "edit"));
+						put("aplicacao", Arrays.asList("create", "update",
+								"show", "edit"));
 					}
 				});
 			}
