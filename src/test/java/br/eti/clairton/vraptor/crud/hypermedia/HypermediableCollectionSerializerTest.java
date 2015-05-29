@@ -38,16 +38,4 @@ public class HypermediableCollectionSerializerTest {
 		final List<?> models = (List<?>) resultado.get("testModeis");
 		assertEquals(1, models.size());
 	}
-
-	//@Test
-	public void testSerializeEmpty() {
-		final List<Pessoa> pessoas = asList();
-		final String json = gson.toJson(pessoas);
-		final Map<?, ?> resultado = gson.fromJson(json, HashMap.class);
-		final List<?> links = (List<?>) resultado.get("links");
-		assertEquals(1, links.size());
-		final List<?> models = (List<?>) resultado.get("pessoas");
-		assertEquals(1, models.size());
-	}
-
 }

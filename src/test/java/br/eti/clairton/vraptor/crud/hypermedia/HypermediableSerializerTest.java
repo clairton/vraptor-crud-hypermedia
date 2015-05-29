@@ -28,10 +28,10 @@ public class HypermediableSerializerTest {
 
 	@Test
 	public void testSerialize() {
-		final TestModel object = new TestModel();
+		final Pessoa object = new Pessoa();
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
-		assertEquals("vendelina", resultado.get("name"));
+		assertEquals("Maria", resultado.get("nome"));
 		final List<?> links = (List<?>) resultado.get("links");
 		assertEquals(1, links.size());
 	}

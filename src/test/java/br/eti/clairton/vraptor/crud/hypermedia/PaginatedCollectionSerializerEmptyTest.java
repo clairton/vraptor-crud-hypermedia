@@ -88,9 +88,9 @@ public class PaginatedCollectionSerializerEmptyTest {
 		assertEquals(1, links.size());
 		final List<?> models = (List<?>) resultado.get("pessoas");
 		assertEquals(0, models.size());
-//		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
-//		assertEquals(Double.valueOf("101.0"), meta.get("total"));
-//		assertEquals(Double.valueOf("345.0"), meta.get("page"));
+		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
+		assertEquals(Double.valueOf("101.0"), meta.get("total"));
+		assertEquals(Double.valueOf("345.0"), meta.get("page"));
 	}
 
 	@javax.enterprise.inject.Produces

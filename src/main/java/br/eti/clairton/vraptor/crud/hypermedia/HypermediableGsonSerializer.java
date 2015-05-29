@@ -21,6 +21,8 @@ import br.com.caelum.vraptor.serialization.gson.GsonSerializer;
 import br.com.caelum.vraptor.serialization.gson.GsonSerializerBuilder;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
+import br.eti.clairton.paginated.collection.Meta;
+import br.eti.clairton.paginated.collection.PaginatedCollection;
 
 import com.google.gson.Gson;
 
@@ -78,6 +80,11 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 				final String resource = current().select(String.class, rQ).get();
 				final Set<Link> links = navigator.from(Collections.emptyList(), resource, operation);
 				map.put("links", links);
+				if(PaginatedCollection.class.isInstance(object)){
+					final PaginatedCollection<?, ?> paginated = (PaginatedCollection<?, ?>) object;
+					final Meta meta = paginated.unwrap(Meta.class);
+					map.put("meta", meta);
+				}				
 				gson.toJson(map, writer);
 				flushQuietly(writer);
 				return;
