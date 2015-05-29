@@ -1,7 +1,6 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
@@ -49,20 +48,4 @@ public class PaginatedCollectionSerializerTest {
 		assertEquals(Double.valueOf("101.0"), meta.get("total"));
 		assertEquals(Double.valueOf("345.0"), meta.get("page"));
 	}
-
-	//@Test
-	public void testSerializeEmpty() {
-		final PaginatedCollection<TestModel, Meta> pessoas = new PaginatedMetaList<TestModel>(
-				emptyList(), meta);
-		final String json = gson.toJson(pessoas);
-		final Map<?, ?> resultado = gson.fromJson(json, HashMap.class);
-		final List<?> links = (List<?>) resultado.get("links");
-		assertEquals(1, links.size());
-		final List<?> models = (List<?>) resultado.get("testModeis");
-		assertEquals(1, models.size());
-		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
-		assertEquals(Double.valueOf("101.0"), meta.get("total"));
-		assertEquals(Double.valueOf("345.0"), meta.get("page"));
-	}
-
 }

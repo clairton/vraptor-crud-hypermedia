@@ -14,8 +14,8 @@ import com.google.gson.JsonSerializer;
 class TestModelSerialize implements JsonSerializer<TestModel> {
 	private final ModelSerializer delegate;
 
-	public TestModelSerialize(HypermediableRule navigator,
-			@Resource String resource, @Operation String operation) {
+	public TestModelSerialize(final HypermediableRule navigator,
+			final @Resource String resource, final @Operation String operation) {
 		delegate = new ModelSerializer(navigator, resource, operation);
 	}
 

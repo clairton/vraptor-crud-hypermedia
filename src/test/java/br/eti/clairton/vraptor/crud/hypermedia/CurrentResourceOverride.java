@@ -31,13 +31,15 @@ public class CurrentResourceOverride extends CurrentResource {
 
 	@Produces
 	@Resource
+	@Specializes
 	public String getResource() {
-		return "";
+		return "pessoa";
 	}
 
 	@Produces
 	@Operation
+	@Specializes
 	public String getOperation() {
-		return "";
+		return "index";
 	}
 }

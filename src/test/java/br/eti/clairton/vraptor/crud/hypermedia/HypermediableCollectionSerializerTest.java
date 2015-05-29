@@ -39,7 +39,7 @@ public class HypermediableCollectionSerializerTest {
 		assertEquals(1, models.size());
 	}
 
-	// @Test
+	//@Test
 	public void testSerializeEmpty() {
 		final List<Pessoa> pessoas = asList();
 		final String json = gson.toJson(pessoas);
