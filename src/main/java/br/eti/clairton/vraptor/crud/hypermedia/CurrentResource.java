@@ -6,23 +6,28 @@ import javax.inject.Inject;
 
 import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.http.MutableRequest;
+import br.eti.clairton.inflector.Inflector;
 
 @Dependent
 public class CurrentResource {
 	private final MutableRequest request;
 	private final ControllerMethod method;
+	private final Inflector inflector;
 
 	@Inject
 	public CurrentResource(final MutableRequest request,
-			final ControllerMethod method) {
+			final ControllerMethod method, final Inflector inflector) {
 		this.request = request;
 		this.method = method;
+		this.inflector = inflector;
 	}
 
 	@Produces
 	@Resource
 	public String getResource() {
-		return getResource(request.getRequestedUri());
+		final String resource = inflector.singularize(getResource(request
+				.getRequestedUri()));
+		return resource;
 	}
 
 	@Produces

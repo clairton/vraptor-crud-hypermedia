@@ -9,14 +9,15 @@ import javax.inject.Inject;
 import br.com.caelum.vraptor.controller.ControllerMethod;
 import br.com.caelum.vraptor.controller.DefaultControllerMethod;
 import br.com.caelum.vraptor.http.MutableRequest;
+import br.eti.clairton.inflector.Inflector;
 
 @Specializes
 public class CurrentResourceOverride extends CurrentResource {
 
 	@Inject
 	public CurrentResourceOverride(MutableRequest request,
-			ControllerMethod method) {
-		super(request, getControllerMethod());
+			ControllerMethod method, final Inflector inflector) {
+		super(request, getControllerMethod(), inflector);
 	}
 
 	private static ControllerMethod getControllerMethod() {
