@@ -20,8 +20,7 @@ import br.eti.clairton.security.Resource;
 
 import com.google.gson.JsonSerializer;
 
-public class HypermediableProducer extends
-		br.eti.clairton.vraptor.crud.serializer.Producer {
+public class HypermediableProducer extends br.eti.clairton.vraptor.crud.serializer.Producer {
 	private final Resource rQ = new Resource() {
 
 		@Override

@@ -12,12 +12,9 @@ import br.eti.clairton.repository.Model;
 import com.google.gson.JsonSerializer;
 
 @Vetoed
-public class ModelCollectionSerializer extends
-		HypermediableCollectionSerializer<Model> implements
-		JsonSerializer<Collection<Model>> {
+public class ModelCollectionSerializer extends HypermediableCollectionSerializer<Model> implements JsonSerializer<Collection<Model>> {
 
-	public ModelCollectionSerializer(HypermediableRule navigator,
-			String resource, String operation, Inflector inflector) {
+	public ModelCollectionSerializer(final HypermediableRule navigator, final String resource, final String operation, final Inflector inflector) {
 		super(navigator, resource, operation, inflector);
 	}
 
