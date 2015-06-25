@@ -8,8 +8,8 @@ import br.com.caelum.vraptor.Result;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.inflector.Language;
 import br.eti.clairton.repository.Repository;
+import br.eti.clairton.repository.vraptor.QueryParser;
 import br.eti.clairton.vraptor.crud.controller.CrudController;
-import br.eti.clairton.vraptor.crud.controller.QueryParser;
 
 @Controller
 public class AplicacaoController extends CrudController<Aplicacao> {
