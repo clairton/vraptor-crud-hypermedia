@@ -36,8 +36,7 @@ public class PaginatedCollectionSerializerTest {
 
 	@Test
 	public void testSerialize() {
-		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(
-				asList(new TestModel()), meta);
+		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(asList(new TestModel()), meta);
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, HashMap.class);
 		final List<?> links = (List<?>) resultado.get("links");
