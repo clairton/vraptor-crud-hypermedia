@@ -10,9 +10,14 @@
 		<Logger name="org.apache.log4j.xml" level="warn" />
 		<Logger name="org.jboss.weld" level="warn" />
 		<Logger name="br.eti.clairton" level="info" />
-		<Logger name="br.com.caelum" level="info" />
-		<Logger name="hibernate" level="warn" />
+		<Logger name="br.com.caelum" level="warn" />
+		<Logger name="org.apache.deltaspike" level="warn" />
 		<Logger name="org.hibernate" level="warn" />
+		<Logger name="org.hibernate.SQL" level="warn" />
+		<Logger name="org.hibernate.type" level="warn" />
+		<Root level="warn">
+			<AppenderRef ref="STDOUT" />
+		</Root>
 		<Root level="debug">
 			<AppenderRef ref="STDOUT" />
 		</Root>
