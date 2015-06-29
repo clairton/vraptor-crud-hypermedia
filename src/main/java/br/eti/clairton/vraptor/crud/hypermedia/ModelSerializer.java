@@ -1,19 +1,14 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Map;
 
 import javax.enterprise.inject.Specializes;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
-import br.eti.clairton.gson.hypermedia.HypermediableSerializer;
 import br.eti.clairton.jpa.serializer.Mode;
 import br.eti.clairton.repository.Model;
-import br.eti.clairton.security.Operation;
-import br.eti.clairton.security.Resource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
@@ -26,18 +21,11 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 
 	@Inject
 	public ModelSerializer(final HypermediableRule navigator) {
-		delegate = new HypermediableSerializer<Model>(navigator){
+		delegate = new HypermediableSerializer<Model>(navigator);
+	}
 
-			@Override
-			protected String getResource() {
-				return CDI.current().select(String.class, RQ).get();
-			}
-
-			@Override
-			protected String getOperation() {
-				return CDI.current().select(String.class, OQ).get();
-			}
-		};
+	public ModelSerializer(final HypermediableSerializer<Model> delegate) {
+		this.delegate = delegate;
 	}
 
 	@Override
@@ -49,29 +37,4 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	public Map<String, Mode> nodes() {
 		return delegate.nodes();
 	}
-
-	private static final Resource RQ = new Resource() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Resource.class;
-		}
-
-		@Override
-		public String value() {
-			return "";
-		}
-	};
-	private static final Operation OQ = new Operation() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Operation.class;
-		}
-
-		@Override
-		public String value() {
-			return "";
-		}
-	};
 }
