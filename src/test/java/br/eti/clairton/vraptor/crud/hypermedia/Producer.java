@@ -37,7 +37,6 @@ import org.apache.logging.log4j.Logger;
 import org.mockito.Mockito;
 
 import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
-import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.inflector.Language;
 import br.eti.clairton.inflector.Locale;
@@ -49,12 +48,8 @@ import br.eti.clairton.security.Lock;
 import br.eti.clairton.security.LockInMemory;
 import br.eti.clairton.security.Locksmith;
 import br.eti.clairton.security.LocksmithInMemory;
-import br.eti.clairton.security.Operation;
-import br.eti.clairton.security.Resource;
 import br.eti.clairton.security.Token;
 import br.eti.clairton.security.User;
-
-import com.google.gson.JsonSerializer;
 
 @Priority(Interceptor.Priority.LIBRARY_BEFORE + 1)
 @RequestScoped
@@ -81,10 +76,12 @@ public class Producer {
 		final PrintWriter writer = new PrintWriter(outputStream);
 		response = new MockHttpServletResponse() {
 
+			@Override
 			public java.io.PrintWriter getWriter() {
 				return writer;
 			}
 
+			@Override
 			public String toString() {
 				try {
 					return new String(Files.readAllBytes(file.toPath()));
@@ -108,13 +105,6 @@ public class Producer {
 	@Produces
 	public Cache getCache() {
 		return Mockito.mock(Cache.class);
-	}
-
-	@Produces
-	public JsonSerializer<TestModel> getSerializer(
-			final HypermediableRule navigator,
-			final @Operation String operation, final @Resource String resource) {
-		return new TestModelSerialize(navigator, resource, operation);
 	}
 
 	@Produces

@@ -6,4 +6,5 @@ class TestModel extends Model {
 	private static final long serialVersionUID = 1L;
 
 	public String name = "vendelina";
+	public String test = "vendelina";
 }

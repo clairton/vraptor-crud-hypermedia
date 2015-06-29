@@ -1,6 +1,7 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
@@ -33,5 +34,6 @@ public class SerializerTest {
 		final Map<?, ?> map = gson.fromJson(json, Map.class);
 		assertEquals(model.name, map.get("name"));
 		assertTrue(map.containsKey("links"));
+		assertFalse(map.containsKey("test"));
 	}
 }

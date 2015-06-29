@@ -2,11 +2,12 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import java.lang.reflect.Type;
 
+import javax.inject.Inject;
+
 import br.com.caelum.vraptor.serialization.gson.RegisterStrategy;
 import br.com.caelum.vraptor.serialization.gson.RegisterType;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
-import br.eti.clairton.security.Operation;
-import br.eti.clairton.security.Resource;
+import br.eti.clairton.jpa.serializer.Mode;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
@@ -16,9 +17,10 @@ import com.google.gson.JsonSerializer;
 class TestModelSerialize implements JsonSerializer<TestModel> {
 	private final ModelSerializer delegate;
 
-	public TestModelSerialize(final HypermediableRule navigator,
-			final @Resource String resource, final @Operation String operation) {
-		delegate = new ModelSerializer(navigator, resource, operation);
+	@Inject
+	public TestModelSerialize(final HypermediableRule navigator) {
+		delegate = new ModelSerializer(navigator);
+		delegate.nodes().put("test", Mode.IGNORE);
 	}
 
 	@Override

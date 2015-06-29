@@ -34,30 +34,6 @@ import com.google.gson.Gson;
  */
 @Vetoed
 public class HypermediableGsonSerializer extends GsonSerializer {
-	private final Resource rQ = new Resource() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Resource.class;
-		}
-
-		@Override
-		public String value() {
-			return "";
-		}
-	};
-	private final Operation oQ = new Operation() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Operation.class;
-		}
-
-		@Override
-		public String value() {
-			return "";
-		}
-	};
 	private final GsonSerializerBuilder builder;
 	private final Writer writer;
 
@@ -95,8 +71,8 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 				map.put(alias, object);
 				final Class<HypermediableRule> t = HypermediableRule.class;
 				final HypermediableRule navigator = current().select(t).get();
-				final String operation = current().select(String.class, oQ).get();
-				final String resource = current().select(String.class, rQ).get();
+				final String operation = current().select(String.class, OQ).get();
+				final String resource = current().select(String.class, RQ).get();
 				final Set<Link> links = navigator.from(emptyList(), resource, operation);
 				map.put("links", links);
 				if (PaginatedCollection.class.isInstance(object)) {
@@ -111,4 +87,29 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 		}
 		super.serialize();
 	}
+
+	private static final Resource RQ = new Resource() {
+
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return Resource.class;
+		}
+
+		@Override
+		public String value() {
+			return "";
+		}
+	};
+	private static final Operation OQ = new Operation() {
+
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return Operation.class;
+		}
+
+		@Override
+		public String value() {
+			return "";
+		}
+	};
 }
