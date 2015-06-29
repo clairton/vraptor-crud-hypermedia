@@ -22,8 +22,7 @@ class TestModelSerialize implements JsonSerializer<TestModel> {
 	}
 
 	@Override
-	public JsonElement serialize(final TestModel src, final Type type,
-			final JsonSerializationContext context) {
+	public JsonElement serialize(final TestModel src, final Type type, final JsonSerializationContext context) {
 		return delegate.serialize(src, type, context);
 	}
 }

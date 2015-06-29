@@ -3,7 +3,6 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class HypermediableCollectionSerializerTest {
 	public void testSerialize() {
 		final List<TestModel> object = asList(new TestModel());
 		final String json = gson.toJson(object);
-		final Map<?, ?> resultado = gson.fromJson(json, HashMap.class);
+		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
 		final List<?> links = (List<?>) resultado.get("links");
 		assertEquals(1, links.size());
 		final List<?> models = (List<?>) resultado.get("testModeis");

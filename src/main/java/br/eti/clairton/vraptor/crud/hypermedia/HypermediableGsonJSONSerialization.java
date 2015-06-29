@@ -16,21 +16,17 @@ import br.com.caelum.vraptor.view.ResultException;
 
 /**
  * Seta a configuração para não envolver o json em uma tag root.
- * 
+ *
  * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
  */
 @Specializes
 public class HypermediableGsonJSONSerialization extends GsonJSONSerialization {
-
 	private GsonSerializerBuilder builder;
 	private Writer writer;
 	private TypeNameExtractor extractor;
 
 	@Inject
-	public HypermediableGsonJSONSerialization(
-			final HttpServletResponse response,
-			final TypeNameExtractor extractor,
-			final GsonSerializerBuilder builder, final Environment environment) {
+	public HypermediableGsonJSONSerialization(final HttpServletResponse response, final TypeNameExtractor extractor, final GsonSerializerBuilder builder, final Environment environment) {
 		super(response, extractor, builder, environment);
 		this.extractor = extractor;
 		this.builder = builder;
@@ -44,6 +40,7 @@ public class HypermediableGsonJSONSerialization extends GsonJSONSerialization {
 	/**
 	 * {@inheritDoc}.
 	 */
+	@Override
 	protected SerializerBuilder getSerializer() {
 		return new HypermediableGsonSerializer(builder, writer, extractor);
 	}
