@@ -1,11 +1,12 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 
 import javax.enterprise.inject.Vetoed;
 
+import br.eti.clairton.gson.hypermedia.HypermediableCollectionSerializer;
 import br.eti.clairton.gson.hypermedia.HypermediablePaginatedCollectionSerializer;
+import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
 import br.eti.clairton.repository.Model;
@@ -19,8 +20,8 @@ public class ModelPaginatedSerializer implements JsonSerializer<PaginatedCollect
 
 	private final HypermediablePaginatedCollectionSerializer<Model, Meta> delegate;
 
-	public ModelPaginatedSerializer(final JsonSerializer<Collection<Model>> delegate) {
-		this.delegate = new HypermediablePaginatedCollectionSerializer<Model, Meta>(delegate) {
+	public ModelPaginatedSerializer(final HypermediableCollectionSerializer<Model> delegate, final Inflector inflector) {
+		this.delegate = new HypermediablePaginatedCollectionSerializer<Model, Meta>(delegate, inflector) {
 		};
 	}
 

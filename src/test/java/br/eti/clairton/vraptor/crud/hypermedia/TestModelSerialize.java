@@ -14,7 +14,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 @RegisterStrategy(RegisterType.SINGLE)
-class TestModelSerialize implements JsonSerializer<TestModel> {
+public class TestModelSerialize implements JsonSerializer<TestModel> {
 	private final ModelSerializer delegate;
 
 	@Inject

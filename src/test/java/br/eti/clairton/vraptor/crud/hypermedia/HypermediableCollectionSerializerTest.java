@@ -28,13 +28,21 @@ public class HypermediableCollectionSerializerTest {
 	}
 
 	@Test
-	public void testSerialize() {
+	public void testNoSerialize() {
 		final List<TestModel> object = asList(new TestModel());
+		final String json = gson.toJson(object);
+		final List<?> resultado = gson.fromJson(json, List.class);
+		assertEquals(1, resultado.size());
+	}
+
+	@Test
+	public void testSerialize() {
+		final List<Pessoa> object = asList(new Pessoa());
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
 		final List<?> links = (List<?>) resultado.get("links");
 		assertEquals(1, links.size());
-		final List<?> models = (List<?>) resultado.get("testModeis");
+		final List<?> models = (List<?>) resultado.get("pessoas");
 		assertEquals(1, models.size());
 	}
 }

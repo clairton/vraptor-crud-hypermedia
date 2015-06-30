@@ -48,7 +48,7 @@ public class ModelCollectionSerializer implements JsonSerializer<Collection<Mode
 				return CDI.current().select(String.class, OP).get();
 			}
 		};
-		paginated = new ModelPaginatedSerializer(hypermedia);
+		paginated = new ModelPaginatedSerializer(hypermedia, inflector);
 	}
 
 	@Override

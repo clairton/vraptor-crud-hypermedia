@@ -13,7 +13,7 @@ import br.eti.clairton.security.Resource;
 @Vetoed
 public class HypermediableSerializer<T> extends br.eti.clairton.gson.hypermedia.HypermediableSerializer<T> {
 
-	public HypermediableSerializer(HypermediableRule navigator) {
+	public HypermediableSerializer(final HypermediableRule navigator) {
 		super(navigator);
 	}
 

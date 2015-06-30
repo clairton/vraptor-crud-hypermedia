@@ -2,6 +2,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 import java.util.Map;
@@ -32,15 +33,35 @@ public class PaginatedCollectionSerializerTest {
 	public void setUp() {
 		gson = builder.create();
 	}
+	@Test
+	public void testWithLink() {
+		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(asList(), meta);
+		final String json = gson.toJson(object);
+		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
+		assertFalse(resultado.containsKey("links"));
+		assertFalse(resultado.containsKey("meta"));
+	}
+
+	@Test
+	public void testWithoutLink() {
+		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(asList(new TestModel()), meta);
+		final String json = gson.toJson(object);
+		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
+		assertFalse(resultado.containsKey("links"));
+		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
+		assertEquals(Double.valueOf("101.0"), meta.get("total"));
+		assertEquals(Double.valueOf("345.0"), meta.get("page"));
+	}
 
 	@Test
 	public void testSerialize() {
-		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(asList(new TestModel()), meta);
+		final List<Pessoa> pessoas = asList(new Pessoa());
+		final PaginatedCollection<Pessoa, Meta> object = new PaginatedMetaList<Pessoa>(pessoas, meta);
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
 		final List<?> links = (List<?>) resultado.get("links");
 		assertEquals(1, links.size());
-		final List<?> models = (List<?>) resultado.get("testModeis");
+		final List<?> models = (List<?>) resultado.get("pessoas");
 		assertEquals(1, models.size());
 		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
 		assertEquals(Double.valueOf("101.0"), meta.get("total"));

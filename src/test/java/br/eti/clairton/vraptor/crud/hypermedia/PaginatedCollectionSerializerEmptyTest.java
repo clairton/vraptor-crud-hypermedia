@@ -59,10 +59,12 @@ public class PaginatedCollectionSerializerEmptyTest {
 		final PrintWriter writer = new PrintWriter(outputStream);
 		response = new MockHttpServletResponse() {
 
+			@Override
 			public java.io.PrintWriter getWriter() {
 				return writer;
 			}
 
+			@Override
 			public String toString() {
 				try {
 					return new String(Files.readAllBytes(file.toPath()));
@@ -78,8 +80,7 @@ public class PaginatedCollectionSerializerEmptyTest {
 
 	@Test
 	public void testSerialize() {
-		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(
-				asList(), meta);
+		final PaginatedCollection<Pessoa, Meta> object = new PaginatedMetaList<Pessoa>(asList(), meta);
 		final Serializer serializer = serilization.from(object, "pessoas");
 		serializer.serialize();
 		final String json = response.toString();
