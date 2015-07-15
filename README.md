@@ -66,6 +66,49 @@ O exemplo acima irá retornar algo parecido com:
 }
 ```
 
+Para coleções paginadas:
+
+```java
+Meta meta = new Meta(101l, 345l);
+List<Pessoa> pessoas = asList(new Pessoa());
+PaginatedCollection<Pessoa, Meta> object = new PaginatedMetaList<Pessoa>(pessoas, meta);
+result
+	.use(Resuls.json())
+	.from(pessoas, "pessoas")
+	.serialize();
+```
+O exemplo acima irá retornar algo parecido com:
+```javascript
+{  
+   "pessoas":[{  
+      "id":1,
+      "nome":"Maria",
+      "links":[  
+         {  
+            "href":"/pessoas/1",
+            "rel":"update",
+            "title":"Salvar",
+            "method":"PUT",
+            "type":"application/json"
+         }
+      ]
+   }],
+  "meta":{
+  	"total": 101,
+  	"page": 345
+  },
+  "links":[  
+     {  
+        "href":"/pessoas/new",
+        "rel":"new",
+        "title":"Criar",
+        "method":"GET",
+        "type":"application/json"
+     }
+  ]
+}
+```
+
 
 Se usar o maven, será necessário adicionar os repositórios:
 ```xml
