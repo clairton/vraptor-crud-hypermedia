@@ -1,5 +1,6 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -20,7 +21,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-public class ModelCollectionSerializer implements JsonSerializer<Collection<Model>> {
+public class ModelCollectionSerializer implements JsonSerializer<Collection<Model>>, Serializable {
+	private static final long serialVersionUID = 1L;
 	private final HypermediableCollectionSerializer<Model> hypermedia;
 	private final JsonSerializer<PaginatedCollection<Model, Meta>> paginated;
 
@@ -32,6 +34,7 @@ public class ModelCollectionSerializer implements JsonSerializer<Collection<Mode
 	@Inject
 	public ModelCollectionSerializer(final HypermediableRule navigator, final Inflector inflector) {
 		hypermedia = new HypermediableCollectionSerializer<Model>(navigator, inflector) {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Class<Model> getCollectionType() {

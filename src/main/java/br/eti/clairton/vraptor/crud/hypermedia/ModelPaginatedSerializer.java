@@ -1,5 +1,6 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 
 import javax.enterprise.inject.Vetoed;
@@ -16,12 +17,14 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 @Vetoed
-public class ModelPaginatedSerializer implements JsonSerializer<PaginatedCollection<Model, Meta>> {
+public class ModelPaginatedSerializer implements JsonSerializer<PaginatedCollection<Model, Meta>>, Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final HypermediablePaginatedCollectionSerializer<Model, Meta> delegate;
 
 	public ModelPaginatedSerializer(final HypermediableCollectionSerializer<Model> delegate, final Inflector inflector) {
 		this.delegate = new HypermediablePaginatedCollectionSerializer<Model, Meta>(delegate, inflector) {
+			private static final long serialVersionUID = 1L;
 		};
 	}
 

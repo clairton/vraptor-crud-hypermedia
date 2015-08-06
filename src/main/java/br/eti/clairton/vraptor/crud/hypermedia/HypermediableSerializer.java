@@ -4,17 +4,20 @@ import java.lang.annotation.Annotation;
 
 import javax.enterprise.inject.Vetoed;
 import javax.enterprise.inject.spi.CDI;
+import javax.persistence.EntityManager;
 
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.security.Operation;
 import br.eti.clairton.security.Resource;
 
 
 @Vetoed
 public class HypermediableSerializer<T> extends br.eti.clairton.gson.hypermedia.HypermediableSerializer<T> {
+	private static final long serialVersionUID = 1L;
 
-	public HypermediableSerializer(final HypermediableRule navigator) {
-		super(navigator);
+	public HypermediableSerializer(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
+		super(navigator, em, inflector);
 	}
 
 	@Override
