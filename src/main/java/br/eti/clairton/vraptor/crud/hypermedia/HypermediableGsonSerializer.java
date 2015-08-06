@@ -13,10 +13,11 @@ import java.util.Set;
 
 import javax.enterprise.inject.Vetoed;
 
+import com.google.gson.Gson;
+
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.serialization.Serializer;
 import br.com.caelum.vraptor.serialization.gson.Exclusions;
-import br.com.caelum.vraptor.serialization.gson.GsonSerializer;
 import br.com.caelum.vraptor.serialization.gson.GsonSerializerBuilder;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
@@ -24,8 +25,8 @@ import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
 import br.eti.clairton.security.Operation;
 import br.eti.clairton.security.Resource;
-
-import com.google.gson.Gson;
+import br.eti.clairton.vraptor.crud.GsonSerializer;
+import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 
 /**
  * Seta a configuração para não envolver o json em uma tag root.
@@ -37,8 +38,8 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 	private final GsonSerializerBuilder builder;
 	private final Writer writer;
 
-	public HypermediableGsonSerializer(final GsonSerializerBuilder builder, final Writer writer, final TypeNameExtractor extractor) {
-		super(builder, writer, extractor);
+	public HypermediableGsonSerializer(final GsonSerializerBuilder builder, final Writer writer, final TypeNameExtractor extractor, final TagableExtractor tagableExtractor) {
+		super(builder, writer, extractor, tagableExtractor);
 		this.builder = builder;
 		this.writer = writer;
 	}
