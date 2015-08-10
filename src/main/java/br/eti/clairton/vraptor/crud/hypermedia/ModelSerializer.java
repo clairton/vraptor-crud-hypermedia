@@ -14,16 +14,17 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
-import br.eti.clairton.jpa.serializer.Nodes;
 import br.eti.clairton.repository.Model;
 
 @Specializes
-public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.ModelSerializer implements JsonSerializer<Model>, JsonDeserializer<Model> {
+public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.ModelSerializer implements JsonSerializer<Model>, JsonDeserializer<Model>, Hypermediable<Model> {
 	private static final long serialVersionUID = 1L;
-	private final AbastractModelSerializer<Model> delegate;
-	
+	private final Hypermediable<Model> hypermediable;
+	private final HypermediableSerializer<Model> serializer;
+
 	@Deprecated
 	public ModelSerializer() {
 		this(null, null, null);
@@ -31,28 +32,51 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 
 	@Inject
 	public ModelSerializer(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
-		delegate = new AbastractModelSerializer<Model>(navigator, inflector, em){
+		super(inflector, em);
+		serializer = new HypermediableSerializer<Model>(navigator, em, inflector) {
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getResource() {
+				return ModelSerializer.this.getResource();
+			}
+
+			@Override
+			public String getOperation() {
+				return ModelSerializer.this.getOperation();
+			}
+			
+			@Override
+			public String getRootTag(final Model src) {
+				return ModelSerializer.this.getRootTag(src);
+			}
+			
+			@Override
+			public String getRootTagCollection(final Collection<Model> collection) {
+				return ModelSerializer.this.getRootTagCollection(collection);
+			}
+
 		};
+		this.hypermediable = new HypermediableDefault<>();
 	}
 
+	@Override
+	public String getResource() {
+		return hypermediable.getResource();
+	}
+
+	@Override
+	public String getOperation() {
+		return hypermediable.getOperation();
+	}
+
+	@Override
 	public JsonElement serialize(final Model src, final Type type, final JsonSerializationContext context) {
-		return delegate.serialize(src, type, context);
+		return serializer.serialize(src, type, context);
 	}
 
-	public String getRootTag(final Model src) {
-		return delegate.getRootTag(src);
-	}
-
-	public String getRootTagCollection(final Collection<Model> collection) {
-		return delegate.getRootTagCollection(collection);
-	}
-
-	public Nodes nodes() {
-		return delegate.nodes();
-	}
-
+	@Override
 	public Model deserialize(final JsonElement json, final Type type, final JsonDeserializationContext context) throws JsonParseException {
-		return delegate.deserialize(json, type, context);
-	}	
+		return serializer.deserialize(json, type, context);
+	}
 }

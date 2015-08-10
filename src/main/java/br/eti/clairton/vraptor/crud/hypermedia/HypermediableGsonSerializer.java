@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 import static javax.enterprise.inject.spi.CDI.current;
 
 import java.io.Writer;
-import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +18,11 @@ import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.serialization.Serializer;
 import br.com.caelum.vraptor.serialization.gson.Exclusions;
 import br.com.caelum.vraptor.serialization.gson.GsonSerializerBuilder;
+import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
-import br.eti.clairton.security.Operation;
-import br.eti.clairton.security.Resource;
 import br.eti.clairton.vraptor.crud.GsonSerializer;
 import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 
@@ -37,11 +35,13 @@ import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 public class HypermediableGsonSerializer extends GsonSerializer {
 	private final GsonSerializerBuilder builder;
 	private final Writer writer;
+	private final Hypermediable<?> hypermediable;
 
 	public HypermediableGsonSerializer(final GsonSerializerBuilder builder, final Writer writer, final TypeNameExtractor extractor, final TagableExtractor tagableExtractor) {
 		super(builder, writer, extractor, tagableExtractor);
 		this.builder = builder;
 		this.writer = writer;
+		hypermediable = new HypermediableDefault<>();
 	}
 
 	/**
@@ -72,8 +72,8 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 				map.put(alias, object);
 				final Class<HypermediableRule> t = HypermediableRule.class;
 				final HypermediableRule navigator = current().select(t).get();
-				final String operation = current().select(String.class, OQ).get();
-				final String resource = current().select(String.class, RQ).get();
+				final String operation = hypermediable.getOperation();
+				final String resource = hypermediable.getResource();
 				final Set<Link> links = navigator.from(emptyList(), resource, operation);
 				map.put("links", links);
 				if (PaginatedCollection.class.isInstance(object)) {
@@ -88,29 +88,4 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 		}
 		super.serialize();
 	}
-
-	private static final Resource RQ = new Resource() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Resource.class;
-		}
-
-		@Override
-		public String value() {
-			return "";
-		}
-	};
-	private static final Operation OQ = new Operation() {
-
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Operation.class;
-		}
-
-		@Override
-		public String value() {
-			return "";
-		}
-	};
 }
