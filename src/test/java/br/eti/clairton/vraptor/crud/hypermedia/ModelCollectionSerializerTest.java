@@ -36,6 +36,7 @@ import br.com.caelum.vraptor.serialization.xstream.XStreamBuilderImpl;
 import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
 import br.com.caelum.vraptor.util.test.MockInstanceImpl;
 import br.com.caelum.vraptor.util.test.MockSerializationResult;
+import br.eti.clairton.gson.hypermedia.HypermediablePaginatedCollectionSerializer;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.inflector.Inflector;
@@ -125,6 +126,24 @@ public class ModelCollectionSerializerTest {
 			return tag;
 		};
 	};
+
+	private final JsonSerializer<PaginatedCollection<Model, Meta>> paginatedSerializer = new HypermediablePaginatedCollectionSerializer<Model, Meta>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String getRootTag(final Model src) {
+			return tag;
+		}
+		
+		@Override
+		public String getResource() {
+			return tag;
+		}
+		
+		public String getOperation() {
+			return tag;
+		};
+	};
 	
 	private String nome = "Nome da Aplicação Número: " +  new Date().getTime();
 	private Repository repository = new Repository(null, null, null, null){
@@ -172,6 +191,7 @@ public class ModelCollectionSerializerTest {
 			public Gson create() {
 				getGsonBuilder().registerTypeHierarchyAdapter(Model.class, serializer);
 				getGsonBuilder().registerTypeHierarchyAdapter(Collection.class, collectionSerializer);
+				getGsonBuilder().registerTypeHierarchyAdapter(PaginatedCollection.class, paginatedSerializer);
 				return getGsonBuilder().create();
 			}
 		};
