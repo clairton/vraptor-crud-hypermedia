@@ -34,4 +34,8 @@ public class TestModelSerialize implements JsonSerializer<TestModel> {
 	public JsonElement serialize(final TestModel src, final Type type, final JsonSerializationContext context) {
 		return delegate.serialize(src, type, context);
 	}
+	
+	public ModelSerializer getDelegate() {
+		return delegate;
+	}
 }

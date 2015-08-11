@@ -18,6 +18,7 @@ import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Tagable;
 import br.eti.clairton.inflector.Inflector;
+import br.eti.clairton.jpa.serializer.Nodes;
 import br.eti.clairton.repository.Model;
 
 @Specializes
@@ -61,6 +62,11 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 		};
 		tagable = new Tagable<>(inflector, this);
 		this.hypermediable = new DefaultHypermediable<>();
+	}
+	
+	@Override
+	public Nodes nodes() {
+		return serializer.nodes();
 	}
 
 	@Override
