@@ -2,6 +2,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
@@ -12,9 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
-
 import com.google.gson.Gson;
+
+import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
+import br.eti.clairton.jpa.serializer.Operation;
 
 @RunWith(CdiTestRunner.class)
 public class SerializerTest {
@@ -24,6 +26,11 @@ public class SerializerTest {
 	@Before
 	public void setUp() {
 		gson = builder.create();
+	}
+
+	@Test
+	public void test2() {
+		assertTrue(new TestModelSerialize(null, null, null).getDelegate().nodes().isIgnore("test", Operation.SERIALIZE));
 	}
 
 	@Test

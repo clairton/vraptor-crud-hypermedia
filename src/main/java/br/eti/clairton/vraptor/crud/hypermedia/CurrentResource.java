@@ -31,8 +31,7 @@ public class CurrentResource {
 	@Produces
 	@Resource
 	public String getResource() {
-		final String resource = inflector.singularize(getResource(request
-				.getRequestedUri()));
+		final String resource = inflector.singularize(getResource(request.getRequestedUri()));
 		return resource;
 	}
 

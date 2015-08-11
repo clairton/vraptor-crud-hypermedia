@@ -3,6 +3,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.gson.Gson;
+
 import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
 import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
 import br.eti.clairton.paginated.collection.PaginatedMetaList;
-
-import com.google.gson.Gson;
 
 @RunWith(CdiTestRunner.class)
 public class PaginatedCollectionSerializerTest {
@@ -38,8 +39,8 @@ public class PaginatedCollectionSerializerTest {
 		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(asList(), meta);
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
-		assertFalse(resultado.containsKey("links"));
-		assertFalse(resultado.containsKey("meta"));
+		assertTrue(resultado.containsKey("links"));
+		assertTrue(resultado.containsKey("meta"));
 	}
 
 	@Test

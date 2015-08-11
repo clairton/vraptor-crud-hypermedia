@@ -177,7 +177,7 @@ public class ModelCollectionSerializerTest {
 		};
 		final Environment environment = new DefaultEnvironment(EnvironmentType.TEST);
 		final TypeNameExtractor extractor = new DefaultTypeNameExtractor();
-		final GsonJSONSerialization serialization = new GsonJSONSerialization(response, extractor, builder, environment, tagableExtractor);
+		final GsonJSONSerialization serialization = new HypermediableGsonJSONSerialization(response, extractor, builder, environment, tagableExtractor);
 		result = new MockSerializationResult(new JavassistProxifier(), XStreamBuilderImpl.cleanInstance(), builder, environment){
 			
 			@Override
@@ -191,6 +191,11 @@ public class ModelCollectionSerializerTest {
 			protected Page paginate() {
 				return new Page(1, 100);
 			}
+			
+			@Override
+			protected void serialize(PaginatedCollection<Aplicacao, Meta> collection) {
+				super.serialize(collection);
+			}
 		};
 	}
 	
@@ -203,6 +208,6 @@ public class ModelCollectionSerializerTest {
 	@Test
 	public void testCollection() throws Exception {
 		controller.index();
-		assertEquals("{\"xptos\":[{\"nome\":\""+nome+"\",\"links\":[{\"rel\":\"new\"}]}],\"links\":[{\"rel\":\"new\"}]}", result.serializedResult());
+		assertEquals("{\"xptos\":[{\"nome\":\""+nome+"\",\"links\":[{\"rel\":\"new\"}]}],\"links\":[{\"rel\":\"new\"}],\"meta\":{\"total\":1,\"page\":100}}", result.serializedResult());
 	}
 }

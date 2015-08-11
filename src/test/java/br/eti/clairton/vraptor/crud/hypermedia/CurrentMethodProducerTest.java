@@ -1,7 +1,7 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
-import static br.eti.clairton.vraptor.crud.hypermedia.CurrentResource.getResource;
 import static org.junit.Assert.assertEquals;
+import static br.eti.clairton.vraptor.crud.hypermedia.CurrentResource.getResource;
 
 import org.junit.Test;
 

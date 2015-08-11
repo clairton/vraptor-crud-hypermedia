@@ -7,8 +7,9 @@ import java.lang.annotation.Annotation;
 import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.security.Operation;
 import br.eti.clairton.security.Resource;
+import br.eti.clairton.vraptor.crud.serializer.Resourceable;
 
-public class DefaultHypermediable<T> implements Hypermediable<T> {
+public class DefaultHypermediable<T> implements Hypermediable<T> , Resourceable{
 
 	@Override
 	public String getResource() {

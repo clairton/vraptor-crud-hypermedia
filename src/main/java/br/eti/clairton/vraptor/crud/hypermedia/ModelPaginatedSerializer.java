@@ -1,9 +1,12 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 import javax.enterprise.inject.Vetoed;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import br.eti.clairton.gson.hypermedia.Hypermediable;
@@ -20,8 +23,13 @@ public class ModelPaginatedSerializer extends HypermediablePaginatedCollectionSe
 	private final Hypermediable<Model> hypermediable;
 
 	public ModelPaginatedSerializer(final HypermediableCollectionSerializer<Model> delegate, final Inflector inflector) {
-		super(delegate, inflector);
+		super(delegate);
 		hypermediable = new DefaultHypermediable<Model>();		
+	}
+	
+	@Override
+	public JsonElement serialize(PaginatedCollection<Model, Meta> src, Type type, JsonSerializationContext context) {
+		return super.serialize(src, type, context);
 	}
 
 	@Override
