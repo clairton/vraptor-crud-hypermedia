@@ -16,6 +16,7 @@ import com.google.gson.JsonSerializer;
 
 import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.gson.hypermedia.Tagable;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.repository.Model;
 
@@ -24,6 +25,7 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<Model> hypermediable;
 	private final HypermediableSerializer<Model> serializer;
+	private final Tagable<Model> tagable;
 
 	@Deprecated
 	public ModelSerializer() {
@@ -57,7 +59,8 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 			}
 
 		};
-		this.hypermediable = new HypermediableDefault<>();
+		tagable = new Tagable<>(inflector, this);
+		this.hypermediable = new DefaultHypermediable<>();
 	}
 
 	@Override
@@ -78,5 +81,15 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	@Override
 	public Model deserialize(final JsonElement json, final Type type, final JsonDeserializationContext context) throws JsonParseException {
 		return serializer.deserialize(json, type, context);
+	}
+	
+	@Override
+	public String getRootTagCollection(final Collection<Model> collection) {
+		return tagable.getRootTagCollection(collection);
+	}
+	
+	@Override
+	public String getRootTag(final Model src) {
+		return tagable.getRootTag(src);
 	}
 }

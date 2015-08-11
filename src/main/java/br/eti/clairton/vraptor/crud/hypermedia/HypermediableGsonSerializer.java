@@ -41,7 +41,7 @@ public class HypermediableGsonSerializer extends GsonSerializer {
 		super(builder, writer, extractor, tagableExtractor);
 		this.builder = builder;
 		this.writer = writer;
-		hypermediable = new HypermediableDefault<>();
+		hypermediable = new DefaultHypermediable<>();
 	}
 
 	/**

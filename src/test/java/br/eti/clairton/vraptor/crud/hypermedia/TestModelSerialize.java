@@ -13,7 +13,7 @@ import br.com.caelum.vraptor.serialization.gson.RegisterStrategy;
 import br.com.caelum.vraptor.serialization.gson.RegisterType;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
-import br.eti.clairton.jpa.serializer.Mode;
+import br.eti.clairton.jpa.serializer.Operation;
 
 @RegisterStrategy(RegisterType.SINGLE)
 public class TestModelSerialize implements JsonSerializer<TestModel> {
@@ -21,8 +21,13 @@ public class TestModelSerialize implements JsonSerializer<TestModel> {
 
 	@Inject
 	public TestModelSerialize(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
-		delegate = new ModelSerializer(navigator, em, inflector);
-		delegate.nodes().put("test", Mode.IGNORE);
+		delegate = new ModelSerializer(navigator, em, inflector){
+			private static final long serialVersionUID = 1L;
+
+			{
+				ignore("test", Operation.SERIALIZE);
+			}
+		};
 	}
 
 	@Override

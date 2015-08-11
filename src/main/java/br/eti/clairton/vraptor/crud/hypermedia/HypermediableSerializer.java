@@ -15,7 +15,7 @@ public class HypermediableSerializer<T> extends br.eti.clairton.gson.hypermedia.
 
 	public HypermediableSerializer(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
 		super(navigator, em, inflector);
-		this.hypermediable = new HypermediableDefault<T>();
+		this.hypermediable = new DefaultHypermediable<T>();
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.security.Operation;
 import br.eti.clairton.security.Resource;
 
-public class HypermediableDefault<T> implements Hypermediable<T> {
+public class DefaultHypermediable<T> implements Hypermediable<T> {
 
 	@Override
 	public String getResource() {

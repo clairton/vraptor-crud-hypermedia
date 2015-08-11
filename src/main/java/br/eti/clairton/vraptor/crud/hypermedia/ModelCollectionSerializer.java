@@ -26,6 +26,7 @@ public class ModelCollectionSerializer extends Tagable<Model> implements JsonSer
 	private final HypermediableCollectionSerializer<Model> hypermediaSerializer;
 	private final JsonSerializer<PaginatedCollection<Model, Meta>> paginatedSerialiazer;
 	private final Hypermediable<Model> hypermediable;
+	private final br.eti.clairton.gson.hypermedia.Tagable<Model> tagable;
 
 	@Deprecated
 	public ModelCollectionSerializer() {
@@ -35,7 +36,8 @@ public class ModelCollectionSerializer extends Tagable<Model> implements JsonSer
 	@Inject
 	public ModelCollectionSerializer(final HypermediableRule navigator, final TagableExtractor extractor, final Inflector inflector) {
 		super(inflector);
-		hypermediable = new HypermediableDefault<>();
+		tagable = new br.eti.clairton.gson.hypermedia.Tagable<>(inflector, this);
+		hypermediable = new DefaultHypermediable<>();
 		hypermediaSerializer = new HypermediableCollectionSerializer<Model>(navigator, inflector) {
 			private static final long serialVersionUID = 1L;
 
@@ -81,6 +83,16 @@ public class ModelCollectionSerializer extends Tagable<Model> implements JsonSer
 	@Override
 	public String getOperation() {
 		return hypermediable.getOperation();
+	}
+	
+	@Override
+	public String getRootTagCollection(final Collection<Model> collection) {
+		return tagable.getRootTagCollection(collection);
+	}
+	
+	@Override
+	public String getRootTag(final Model src) {
+		return tagable.getRootTag(src);
 	}
 
 	@Override
