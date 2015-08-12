@@ -1,6 +1,5 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.EntityManager;
 
 import br.eti.clairton.gson.hypermedia.Hypermediable;
@@ -8,8 +7,7 @@ import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
 
 
-@Vetoed
-public class HypermediableSerializer<T> extends br.eti.clairton.gson.hypermedia.HypermediableSerializer<T> implements Hypermediable<T> {
+public abstract class HypermediableSerializer<T> extends br.eti.clairton.gson.hypermedia.HypermediableSerializer<T> implements Hypermediable<T> {
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<T> hypermediable;
 
