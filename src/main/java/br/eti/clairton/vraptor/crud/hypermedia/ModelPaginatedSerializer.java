@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Priority;
+import javax.inject.Inject;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
@@ -18,12 +19,22 @@ import br.eti.clairton.paginated.collection.PaginatedCollection;
 import br.eti.clairton.repository.Model;
 import br.eti.clairton.vraptor.crud.serializer.Tagable;
 
+/**
+ * Prioridade baixa ser o ultimo a ser carregado.
+ */
+@Priority(1000)
 public class ModelPaginatedSerializer extends HypermediablePaginatedCollectionSerializer<Model, Meta> implements JsonSerializer<PaginatedCollection<Model, Meta>>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<Model> hypermediable;
 	private final Tagable<Model> tagable;
 
-	public ModelPaginatedSerializer(@NotNull final Inflector inflector) {
+	@Deprecated
+	public ModelPaginatedSerializer() {
+		this(null);
+	}
+	
+	@Inject
+	public ModelPaginatedSerializer(final Inflector inflector) {
 		hypermediable = new DefaultHypermediable<Model>();	
 		this.tagable = new Tagable<Model>(inflector){
 			private static final long serialVersionUID = 1L;

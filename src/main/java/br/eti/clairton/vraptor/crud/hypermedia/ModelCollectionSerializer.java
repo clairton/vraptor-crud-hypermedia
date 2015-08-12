@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import javax.annotation.Priority;
 import javax.inject.Inject;
 
 import com.google.gson.JsonElement;
@@ -20,6 +21,7 @@ import br.eti.clairton.vraptor.crud.serializer.Resourceable;
 import br.eti.clairton.vraptor.crud.serializer.Tagable;
 import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 
+@Priority(0)
 public class ModelCollectionSerializer extends HypermediableCollectionSerializer<Model> implements JsonSerializer<Collection<Model>>, HypermediableCollection<Model>, Serializable, Resourceable {
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<Model> hypermediable;

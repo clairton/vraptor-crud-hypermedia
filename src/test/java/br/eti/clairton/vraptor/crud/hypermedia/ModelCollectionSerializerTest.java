@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSerializer;
 
@@ -31,12 +30,10 @@ import br.com.caelum.vraptor.interceptor.DefaultTypeNameExtractor;
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.proxy.JavassistProxifier;
 import br.com.caelum.vraptor.serialization.Serializee;
-import br.com.caelum.vraptor.serialization.gson.GsonSerializerBuilder;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilderImpl;
 import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
 import br.com.caelum.vraptor.util.test.MockInstanceImpl;
 import br.com.caelum.vraptor.util.test.MockSerializationResult;
-import br.eti.clairton.gson.hypermedia.HypermediablePaginatedCollectionSerializer;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.inflector.Inflector;
@@ -57,8 +54,6 @@ import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 import net.vidageek.mirror.dsl.Mirror;
 
 public class ModelCollectionSerializerTest {
-	private final Instance<JsonSerializer<?>> jsonSerializers = new MockInstanceImpl<>(new ArrayList<JsonSerializer<?>>());
-	private final Instance<JsonDeserializer<?>> jsonDeserializers = new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>());
 
 	private final Inflector inflector = Inflector.getForLocale(Locale.pt_BR);
 	
@@ -107,7 +102,7 @@ public class ModelCollectionSerializerTest {
 			return tag;
 		};
 	};
-
+	
 	private final JsonSerializer<Collection<Model>> collectionSerializer = new ModelCollectionSerializer(navigator, tagableExtractor, inflector){
 		private static final long serialVersionUID = 1L;
 
@@ -127,7 +122,7 @@ public class ModelCollectionSerializerTest {
 		};
 	};
 
-	private final JsonSerializer<PaginatedCollection<Model, Meta>> paginatedSerializer = new HypermediablePaginatedCollectionSerializer<Model, Meta>() {
+	private final JsonSerializer<PaginatedCollection<Model, Meta>> paginatedSerializer = new ModelPaginatedSerializer(inflector) {
 		private static final long serialVersionUID = 1L;
 
 		@Override
@@ -144,6 +139,8 @@ public class ModelCollectionSerializerTest {
 			return tag;
 		};
 	};
+	private final Instance<JsonSerializer<?>> jsonSerializers = new MockInstanceImpl<>(Arrays.asList(collectionSerializer, serializer, paginatedSerializer));
+	private final Instance<JsonDeserializer<?>> jsonDeserializers = new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>());
 	
 	private String nome = "Nome da Aplicação Número: " +  new Date().getTime();
 	private Repository repository = new Repository(null, null, null, null){
@@ -186,13 +183,18 @@ public class ModelCollectionSerializerTest {
 	public void init() throws Exception{
 		request = new MockHttpServletRequest();
 		response = new MockHttpServletResponse();
-		final GsonSerializerBuilder builder = new GsonBuilderWrapper(jsonSerializers,  jsonDeserializers, new Serializee()){
-			@Override
-			public Gson create() {
-				getGsonBuilder().registerTypeHierarchyAdapter(Model.class, serializer);
-				getGsonBuilder().registerTypeHierarchyAdapter(Collection.class, collectionSerializer);
-				getGsonBuilder().registerTypeHierarchyAdapter(PaginatedCollection.class, paginatedSerializer);
-				return getGsonBuilder().create();
+		final GsonBuilderWrapper builder = new GsonBuilderWrapper(jsonSerializers,  jsonDeserializers, new Serializee()){
+			
+			protected Class<?> getAdapterType(final Object adapter) {
+				if(adapter.equals(paginatedSerializer)){
+					return PaginatedCollection.class;
+				}else if(adapter.equals(collectionSerializer)){
+					return Collection.class;
+				}else if(adapter.equals(serializer)){
+					return Model.class;
+				}else{
+					throw new RuntimeException();
+				}
 			}
 		};
 		final Environment environment = new DefaultEnvironment(EnvironmentType.TEST);

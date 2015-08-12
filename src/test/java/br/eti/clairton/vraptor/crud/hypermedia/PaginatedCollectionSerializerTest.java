@@ -4,8 +4,11 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,10 +16,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import br.eti.clairton.gson.hypermedia.HypermediablePaginatedCollectionSerializer;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.inflector.Inflector;
@@ -68,7 +71,7 @@ public class PaginatedCollectionSerializerTest {
 			}
 			
 		});
-		builder.registerTypeHierarchyAdapter(PaginatedCollection.class, new HypermediablePaginatedCollectionSerializer<Model, Meta>() {
+		builder.registerTypeAdapter(PaginatedMetaList.class, new ModelPaginatedSerializer(inflector) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -107,7 +110,6 @@ public class PaginatedCollectionSerializerTest {
 		final PaginatedCollection<TestModel, Meta> object = new PaginatedMetaList<TestModel>(asList(new TestModel()), meta);
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
-//		assertFalse(resultado.containsKey("links"));
 		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
 		assertEquals(Double.valueOf("101.0"), meta.get("total"));
 		assertEquals(Double.valueOf("345.0"), meta.get("page"));
@@ -119,12 +121,51 @@ public class PaginatedCollectionSerializerTest {
 		final PaginatedCollection<Pessoa, Meta> object = new PaginatedMetaList<Pessoa>(pessoas, meta);
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
-//		final List<?> links = (List<?>) resultado.get("links");
-//		assertEquals(1, links.size());
 		final List<?> models = (List<?>) resultado.get("testModel");
 		assertEquals(1, models.size());
 		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
 		assertEquals(Double.valueOf("101.0"), meta.get("total"));
 		assertEquals(Double.valueOf("345.0"), meta.get("page"));
 	}
+	
+	@Test
+	public void test(){
+		List<String> string = Arrays.asList("c", "a", "b");
+		Iterator<String> iterator = string.iterator();
+//		while (iterator.hasNext()) {
+//			System.err.println(iterator.next());			
+//		}		
+		List<String> collection = Lists.newArrayList(iterator);
+		Collections.sort(collection);
+		Iterator<String> iterator2 = collection.iterator();
+		while (iterator2.hasNext()) {
+			System.err.println(iterator2.next());			
+		}		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

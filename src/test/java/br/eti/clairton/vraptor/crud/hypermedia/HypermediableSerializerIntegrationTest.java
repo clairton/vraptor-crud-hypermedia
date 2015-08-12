@@ -2,6 +2,7 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
@@ -33,12 +34,15 @@ public class HypermediableSerializerIntegrationTest {
 	@Test
 	public void test() {
 		final PaginatedCollection<Pessoa, Meta> object = new PaginatedMetaList<>(asList(new Pessoa()), new Meta(1l, 1l));
-		final String json = gson.toJson(object);
+		final String json = gson.toJson(object, PaginatedCollection.class);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
+		assertTrue(resultado.containsKey("meta"));
 		final List<?> links = (List<?>) resultado.get("links");
 		assertEquals(1, links.size());
 		final List<?> models = (List<?>) resultado.get("pessoas");
 		assertEquals(1, models.size());
-		//assertTrue(resultado.containsKey("meta"));
+		final Map<?, ?> model = (Map<?, ?>) models.get(0);
+		final List<?> modelLinks = (List<?>) model.get("links");
+		assertEquals(1, modelLinks.size());
 	}
 }
