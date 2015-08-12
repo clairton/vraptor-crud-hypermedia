@@ -13,12 +13,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
-
 import com.google.gson.Gson;
 
+import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
+import br.eti.clairton.paginated.collection.Meta;
+import br.eti.clairton.paginated.collection.PaginatedCollection;
+import br.eti.clairton.paginated.collection.PaginatedMetaList;
+
 @RunWith(CdiTestRunner.class)
-public class HypermediableCollectionSerializerTest {
+public class HypermediableSerializerIntegrationTest {
 	private @Inject GsonBuilderWrapper builder;
 	private Gson gson;
 
@@ -28,21 +31,14 @@ public class HypermediableCollectionSerializerTest {
 	}
 
 	@Test
-	public void testNoSerialize() {
-		final List<TestModel> object = asList(new TestModel());
-		final String json = gson.toJson(object);
-		final List<?> resultado = gson.fromJson(json, List.class);
-		assertEquals(1, resultado.size());
-	}
-
-	@Test
-	public void testSerialize() {
-		final List<Pessoa> object = asList(new Pessoa());
+	public void test() {
+		final PaginatedCollection<Pessoa, Meta> object = new PaginatedMetaList<>(asList(new Pessoa()), new Meta(1l, 1l));
 		final String json = gson.toJson(object);
 		final Map<?, ?> resultado = gson.fromJson(json, Map.class);
 		final List<?> links = (List<?>) resultado.get("links");
 		assertEquals(1, links.size());
 		final List<?> models = (List<?>) resultado.get("pessoas");
 		assertEquals(1, models.size());
+		//assertTrue(resultado.containsKey("meta"));
 	}
 }

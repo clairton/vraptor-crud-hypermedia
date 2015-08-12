@@ -1,6 +1,7 @@
 package br.eti.clairton.vraptor.crud.hypermedia;
 
 import javax.persistence.EntityManager;
+import javax.validation.constraints.NotNull;
 
 import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
@@ -11,7 +12,7 @@ public abstract class HypermediableSerializer<T> extends br.eti.clairton.gson.hy
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<T> hypermediable;
 
-	public HypermediableSerializer(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
+	public HypermediableSerializer(@NotNull final HypermediableRule navigator, @NotNull final EntityManager em, @NotNull final Inflector inflector) {
 		super(navigator, em, inflector);
 		this.hypermediable = new DefaultHypermediable<T>();
 	}

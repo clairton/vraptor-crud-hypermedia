@@ -16,26 +16,17 @@ import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.jpa.serializer.Operation;
 
 @RegisterStrategy(RegisterType.SINGLE)
-public class TestModelSerialize implements JsonSerializer<TestModel> {
-	private final ModelSerializer delegate;
+public class TestModelSerialize extends AbstractModelSerializer<TestModel> implements JsonSerializer<TestModel> {
+	private static final long serialVersionUID = 1L;
 
 	@Inject
 	public TestModelSerialize(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
-		delegate = new ModelSerializer(navigator, em, inflector){
-			private static final long serialVersionUID = 1L;
-
-			{
-				ignore("test", Operation.SERIALIZE);
-			}
-		};
+		super(navigator, inflector, em);
+		ignore("test", Operation.SERIALIZE);
 	}
 
 	@Override
 	public JsonElement serialize(final TestModel src, final Type type, final JsonSerializationContext context) {
-		return delegate.serialize(src, type, context);
-	}
-	
-	public ModelSerializer getDelegate() {
-		return delegate;
+		return super.serialize(src, type, context);
 	}
 }

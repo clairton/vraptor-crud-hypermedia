@@ -2,35 +2,67 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import br.com.caelum.vraptor.serialization.gson.GsonBuilderWrapper;
-import br.eti.clairton.jpa.serializer.Operation;
+import br.eti.clairton.gson.hypermedia.HypermediableRule;
+import br.eti.clairton.gson.hypermedia.Link;
+import br.eti.clairton.inflector.Inflector;
+import br.eti.clairton.inflector.Locale;
 
-@RunWith(CdiTestRunner.class)
 public class SerializerTest {
-	private @Inject GsonBuilderWrapper builder;
 	private Gson gson;
+	private final Inflector inflector = Inflector.getForLocale(Locale.pt_BR);
+	private final HypermediableRule navigator = new HypermediableRule() {
+		private final Set<Link> links = new HashSet<Link>() {
+			private static final long serialVersionUID = 1L;
+
+			{
+				add(new Link(null, "new", null, null, null));
+			}
+		};
+
+		@Override
+		public <T> Set<Link> from(final T target, final String resource, final String operation) {
+			return links;
+		}
+
+		@Override
+		public <T> Set<Link> from(final Collection<T> target, final String resource, final String operation) {
+			return links;
+		}
+	};
+	private final EntityManager em = Mockito.mock(EntityManager.class);
 
 	@Before
 	public void setUp() {
-		gson = builder.create();
-	}
+		final GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(TestModel.class, new TestModelSerialize(navigator, em, inflector) {
+			private static final long serialVersionUID = 1L;
 
-	@Test
-	public void test2() {
-		assertTrue(new TestModelSerialize(null, null, null).getDelegate().nodes().isIgnore("test", Operation.SERIALIZE));
+			@Override
+			public String getResource() {
+				return "testModel";
+			}
+			
+			@Override
+			public String getOperation() {
+				return "tanto faz";
+			}
+		});
+		gson = builder.create();
 	}
 
 	@Test

@@ -11,22 +11,21 @@ import br.eti.clairton.gson.hypermedia.Link;
 
 @Dependent
 public class HypermediableRuleStub implements HypermediableRule {
+	final Set<Link> links = new HashSet<Link>() {
+		private static final long serialVersionUID = 1L;
+
+		{
+			add(new Link("/pessoas/1", "update", "Salvar", "PUT", "application/json"));
+		}
+	};
 
 	@Override
-	public <T> Set<Link> from(final Collection<T> model, final String resource,
-			final String operation) {
-		final Set<Link> links = new HashSet<>();
-		links.add(new Link("/pessoas/1", "update", "Salvar", "PUT",
-				"application/json"));
+	public <T> Set<Link> from(final Collection<T> model, final String resource, final String operation) {
 		return links;
 	}
 
 	@Override
-	public <T> Set<Link> from(final T model, final String resource,
-			final String operation) {
-		final Set<Link> links = new HashSet<>();
-		links.add(new Link("/pessoas/1", "update", "Salvar", "PUT",
-				"application/json"));
+	public <T> Set<Link> from(final T model, final String resource, final String operation) {
 		return links;
 	}
 }
