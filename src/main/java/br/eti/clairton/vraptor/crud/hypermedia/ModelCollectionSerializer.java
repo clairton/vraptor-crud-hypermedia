@@ -18,14 +18,13 @@ import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.repository.Model;
 import br.eti.clairton.vraptor.crud.serializer.Resourceable;
-import br.eti.clairton.vraptor.crud.serializer.Tagable;
 import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 
 @Priority(0)
 public class ModelCollectionSerializer extends HypermediableCollectionSerializer<Model> implements JsonSerializer<Collection<Model>>, HypermediableCollection<Model>, Serializable, Resourceable {
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<Model> hypermediable;
-	private final Tagable<Model> tagable;
+	private final Inflector inflector;
 
 	@Deprecated
 	public ModelCollectionSerializer() {
@@ -36,19 +35,7 @@ public class ModelCollectionSerializer extends HypermediableCollectionSerializer
 	public ModelCollectionSerializer(final HypermediableRule navigator, final TagableExtractor extractor, final Inflector inflector) {
 		super(navigator, inflector);
 		hypermediable = new DefaultHypermediable<>();
-		this.tagable = new Tagable<Model>(inflector){
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getRootTag(final Model src) {
-				return ModelCollectionSerializer.this.getRootTag(src);
-			}
-
-			@Override
-			public String getResource() {
-				return  ModelCollectionSerializer.this.getResource();
-			}
-		};
+		this.inflector = inflector;
 	}
 
 
@@ -71,10 +58,10 @@ public class ModelCollectionSerializer extends HypermediableCollectionSerializer
 	protected Boolean isResource(final Collection<Model> src) {
 		return (!src.isEmpty() && Model.class.isInstance(getFirst(src))) && super.isResource(src);
 	}
-	
+
 	@Override
-	public String getRootTagCollection(final Collection<Model> collection) {
-		return tagable.getRootTagCollection(collection);
+	public String getRootTagCollection(Collection<Model> collection) {
+		return inflector.pluralize(getResource());
 	}
 
 	@Override
