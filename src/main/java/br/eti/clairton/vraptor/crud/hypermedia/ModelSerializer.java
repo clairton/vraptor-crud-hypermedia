@@ -25,6 +25,7 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	private static final long serialVersionUID = 1L;
 	private final Hypermediable<Model> hypermediable;
 	private final HypermediableSerializer<Model> serializer;
+	private final Inflector inflector;
 
 	@Deprecated
 	public ModelSerializer() {
@@ -34,6 +35,7 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	@Inject
 	public ModelSerializer(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
 		super(inflector, em);
+		this.inflector = inflector;
 		serializer = new HypermediableSerializer<Model>(navigator, em, inflector) {
 			private static final long serialVersionUID = 1L;
 
@@ -74,6 +76,11 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	@Override
 	public String getOperation() {
 		return hypermediable.getOperation();
+	}
+
+	@Override
+	public String getRootTagCollection(Collection<Model> collection) {
+		return inflector.pluralize(getResource());
 	}
 
 	@Override
