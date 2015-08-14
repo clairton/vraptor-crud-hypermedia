@@ -3,21 +3,29 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 import static javax.enterprise.inject.spi.CDI.current;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 
-import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.security.Operation;
 import br.eti.clairton.security.Resource;
-import br.eti.clairton.vraptor.crud.serializer.Resourceable;
 
-public class DefaultHypermediable<T> implements Hypermediable<T> , Resourceable{
+public class DefaultHypermediable<T> implements HypermediableResourceable<T>{
 
 	@Override
+	public String getResource(final T src) {
+		return getResource();
+	}
+
+	@Override
+	public String getResource(final Collection<T> src) {
+		return getResource();
+	}
+
 	public String getResource() {
 		return current().select(String.class, RQ).get();
 	}
 
 	@Override
-	public String getOperation() {
+	public String getOperation(final T src) {
 		return current().select(String.class, OQ).get();
 	}
 

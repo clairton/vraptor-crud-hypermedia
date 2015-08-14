@@ -58,11 +58,12 @@ public class PaginatedCollectionSerializerTest {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public String getResource() {
+			public String getResource(final Model src) {
 				return tag;
 			}
 			
-			public String getOperation() {
+			@Override
+			public String getOperation(final Model src) {
 				return tag;
 			}
 			
@@ -76,16 +77,17 @@ public class PaginatedCollectionSerializerTest {
 			}
 			
 			@Override
-			public String getResource() {
+			public String getResource(final PaginatedCollection<Model, Meta> src) {
 				return tag;
 			}
 			
-			public String getOperation() {
+			@Override
+			public String getOperation(final PaginatedCollection<Model, Meta> src) {
 				return tag;
 			}
 
 			@Override
-			public String getRootTagCollection(Collection<Model> collection) {
+			public String getRootTagCollection(final Collection<Model> collection) {
 				return tag;
 			}
 		});

@@ -21,6 +21,7 @@ import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.inflector.Locale;
+import br.eti.clairton.repository.Model;
 
 public class HypermediableSerializerTest {
 	private Gson gson;
@@ -53,12 +54,12 @@ public class HypermediableSerializerTest {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public String getResource() {
+			public String getResource(final Model src) {
 				return "pessoa";
 			}
 			
 			@Override
-			public String getOperation() {
+			public String getOperation(final Model src) {
 				return "tanto faz";
 			}
 		});
