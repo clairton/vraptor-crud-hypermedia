@@ -1,6 +1,11 @@
-package br.eti.clairton.vraptor.crud.hypermedia;
+package br.eti.clairton.vraptor.crud.model;
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,15 +24,24 @@ public class Aplicacao extends Model {
 	@Size(min = 1, max = 250)
 	private String nome;
 
+	@NotNull
+	@OneToMany(mappedBy = "aplicacao", cascade = CascadeType.ALL)
+	private Collection<Recurso> recursos = new HashSet<Recurso>();
+
 	/**
 	 * Construtor padrão.
 	 */
 	public Aplicacao() {
 	}
 
-	public Aplicacao(String nome) {
+	public Aplicacao(final String nome) {
 		super();
 		this.nome = nome;
+	}
+
+	public Aplicacao(final String nome, final Recurso recurso) {
+		this(nome);
+		this.recursos.add(recurso);
 	}
 
 	public String getNome() {

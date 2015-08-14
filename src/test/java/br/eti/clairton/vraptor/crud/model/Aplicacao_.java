@@ -1,4 +1,4 @@
-package br.eti.clairton.vraptor.crud.hypermedia;
+package br.eti.clairton.vraptor.crud.model;
 
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;

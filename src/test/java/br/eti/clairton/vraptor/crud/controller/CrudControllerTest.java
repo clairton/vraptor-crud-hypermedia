@@ -1,13 +1,10 @@
-package br.eti.clairton.vraptor.crud.hypermedia;
+package br.eti.clairton.vraptor.crud.controller;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.enterprise.inject.Instance;
 import javax.persistence.EntityManager;
@@ -19,6 +16,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonSerializer;
 
@@ -30,12 +28,11 @@ import br.com.caelum.vraptor.interceptor.DefaultTypeNameExtractor;
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.proxy.JavassistProxifier;
 import br.com.caelum.vraptor.serialization.Serializee;
+import br.com.caelum.vraptor.serialization.gson.GsonSerializerBuilder;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilderImpl;
 import br.com.caelum.vraptor.util.test.MockHttpServletResponse;
 import br.com.caelum.vraptor.util.test.MockInstanceImpl;
 import br.com.caelum.vraptor.util.test.MockSerializationResult;
-import br.eti.clairton.gson.hypermedia.HypermediableRule;
-import br.eti.clairton.gson.hypermedia.Link;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.inflector.Locale;
 import br.eti.clairton.jpa.serializer.Tagable;
@@ -48,105 +45,41 @@ import br.eti.clairton.repository.vraptor.Page;
 import br.eti.clairton.repository.vraptor.QueryParser;
 import br.eti.clairton.vraptor.crud.GsonBuilderWrapper;
 import br.eti.clairton.vraptor.crud.GsonJSONSerialization;
-import br.eti.clairton.vraptor.crud.controller.CrudController;
+import br.eti.clairton.vraptor.crud.hypermedia.AplicacaoController;
 import br.eti.clairton.vraptor.crud.model.Aplicacao;
+import br.eti.clairton.vraptor.crud.model.Recurso;
 import br.eti.clairton.vraptor.crud.serializer.DefaultTagableExtrator;
+import br.eti.clairton.vraptor.crud.serializer.ModelSerializer;
 import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 import net.vidageek.mirror.dsl.Mirror;
 
-public class ModelCollectionSerializerTest {
+public class CrudControllerTest {
+	private final Instance<JsonSerializer<?>> jsonSerializers = new MockInstanceImpl<>(new ArrayList<JsonSerializer<?>>());
+	private final Instance<JsonDeserializer<?>> jsonDeserializers = new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>());
 
 	private final Inflector inflector = Inflector.getForLocale(Locale.pt_BR);
-	
-	private final HypermediableRule navigator = new HypermediableRule() {
-		private final Set<Link> links = new HashSet<Link>(){
-			private static final long serialVersionUID = 1L;
 
-			{
-				add(new Link(null, "new", null, null, null));
-			}
-		};
-		@Override
-		public <T> Set<Link> from(final T target, final String resource, final String operation) {
-			return links;
-		}
-		
-		@Override
-		public <T> Set<Link> from(final Collection<T> target, final String resource, final String operation) {
-			return links;
-		}
-	};
-	
-	final TagableExtractor tagableExtractor = new DefaultTagableExtrator(new MockInstanceImpl<>(new ArrayList<Tagable<?>>())){
-		@Override
-		public String extract(final Object object) {
-			if(Collection.class.isInstance(object)){
-				return inflector.pluralize(tag);
-			}
-			return tag;
-		}
-	};
-
-	private final JsonSerializer<Model> serializer = new br.eti.clairton.vraptor.crud.hypermedia.ModelSerializer(navigator, Mockito.mock(EntityManager.class), inflector){
+	private final JsonSerializer<Model> serializer = new ModelSerializer(inflector, Mockito.mock(EntityManager.class)){
 		private static final long serialVersionUID = 1L;
+		{
+			record("recursos");
+		}
 
 		@Override
 		public String getRootTag(final Model src) {
 			return tag;
 		}
 		
-		public String getOperation() {
-			return tag;
-		};
-		
 		public String getResource() {
-			return tag;
-		};
-	};
-	
-	private final JsonSerializer<Collection<Model>> collectionSerializer = new ModelCollectionSerializer(navigator, tagableExtractor, inflector){
-		private static final long serialVersionUID = 1L;
-
-
-		@Override
-		public String getRootTag(final Model src) {
-			return tag;
-		}
-		
-		@Override
-		public String getResource() {
-			return tag;
-		}
-		
-		public String getOperation() {
-			return tag;
+			return "coracao";
 		};
 	};
 
-	private final JsonSerializer<PaginatedCollection<Model, Meta>> paginatedSerializer = new ModelPaginatedSerializer(inflector) {
+	private final String nome = "Nome da Aplicação Número: " +  new Date().getTime();
+	private final Repository repository = new Repository(null, null, null, null){
 		private static final long serialVersionUID = 1L;
-
-		@Override
-		public String getRootTag(final Model src) {
-			return tag;
-		}
-		
-		@Override
-		public String getResource() {
-			return tag;
-		}
-		
-		public String getOperation() {
-			return tag;
-		};
-	};
-	private final Instance<JsonSerializer<?>> jsonSerializers = new MockInstanceImpl<>(Arrays.asList(collectionSerializer, serializer, paginatedSerializer));
-	private final Instance<JsonDeserializer<?>> jsonDeserializers = new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>());
-	
-	private String nome = "Nome da Aplicação Número: " +  new Date().getTime();
-	private Repository repository = new Repository(null, null, null, null){
-		private static final long serialVersionUID = 1L;
-		private final Aplicacao aplicacao = new Aplicacao(nome);
+		private final Recurso recurso = new Recurso("abc");
+		private final Aplicacao aplicacao = new Aplicacao(nome, recurso);
 		private final PaginatedCollection<Model, Meta> collection = new PaginatedMetaList<>(Arrays.asList(aplicacao), new Meta(1l, 100l));
 		
 		@SuppressWarnings("unchecked")
@@ -184,23 +117,23 @@ public class ModelCollectionSerializerTest {
 	public void init() throws Exception{
 		request = new MockHttpServletRequest();
 		response = new MockHttpServletResponse();
-		final GsonBuilderWrapper builder = new GsonBuilderWrapper(jsonSerializers,  jsonDeserializers, new Serializee()){
-			
-			protected Class<?> getAdapterType(final Object adapter) {
-				if(adapter.equals(paginatedSerializer)){
-					return PaginatedCollection.class;
-				}else if(adapter.equals(collectionSerializer)){
-					return Collection.class;
-				}else if(adapter.equals(serializer)){
-					return Model.class;
-				}else{
-					throw new RuntimeException();
-				}
+		final GsonSerializerBuilder builder = new GsonBuilderWrapper(jsonSerializers,  jsonDeserializers, new Serializee()){
+			@Override
+			public Gson create() {
+				getGsonBuilder().registerTypeAdapter(Aplicacao.class, serializer);
+				return getGsonBuilder().create();
 			}
 		};
 		final Environment environment = new DefaultEnvironment(EnvironmentType.TEST);
 		final TypeNameExtractor extractor = new DefaultTypeNameExtractor();
-		final GsonJSONSerialization serialization = new HypermediableGsonJSONSerialization(response, extractor, builder, environment, tagableExtractor);
+		final TagableExtractor tagableExtractor = new DefaultTagableExtrator(new MockInstanceImpl<>(new ArrayList<Tagable<?>>())){
+			@Override
+			@SuppressWarnings("unchecked")
+			protected Tagable<Object> getTagable(final Object object) {
+				return (Tagable<Object>) serializer;
+			}
+		};
+		final GsonJSONSerialization serialization = new GsonJSONSerialization(response, extractor, builder, environment, tagableExtractor);
 		result = new MockSerializationResult(new JavassistProxifier(), XStreamBuilderImpl.cleanInstance(), builder, environment){
 			
 			@Override
@@ -214,23 +147,49 @@ public class ModelCollectionSerializerTest {
 			protected Page paginate() {
 				return new Page(1, 100);
 			}
-			
-			@Override
-			protected void serialize(PaginatedCollection<Aplicacao, Meta> collection) {
-				super.serialize(collection);
-			}
 		};
 	}
 	
 	@Test
 	public void testSingle() throws Exception {
 		controller.edit(id);
-		assertEquals("{\"xpto\":{\"nome\":\""+nome+"\",\"recursos\":[],\"links\":[{\"rel\":\"new\"}]}}", result.serializedResult());
+		assertEquals("{\"xpto\":{\"nome\":\""+nome+"\",\"recursos\":[{\"nome\":\"abc\"}]}}", result.serializedResult());
 	}
 	
 	@Test
 	public void testCollection() throws Exception {
 		controller.index();
-		assertEquals("{\"xptos\":[{\"nome\":\""+nome+"\",\"recursos\":[],\"links\":[{\"rel\":\"new\"}]}],\"links\":[{\"rel\":\"new\"}],\"meta\":{\"total\":1,\"page\":100}}", result.serializedResult());
+		assertEquals("{\"xptos\":[{\"nome\":\""+nome+"\",\"recursos\":[{\"nome\":\"abc\"}]}]}", result.serializedResult());
+	}
+	
+	@Test
+	public void testEmptyCollection() throws Exception {
+		final Repository repository = new Repository(null, null, null, null){
+			private static final long serialVersionUID = 1L;
+			private final PaginatedCollection<Model, Meta> collection = new PaginatedMetaList<>(new ArrayList<>(), new Meta(1l, 100l));
+		
+			
+			@SuppressWarnings("unchecked")
+			public <T extends Model> br.eti.clairton.paginated.collection.PaginatedCollection<T,Meta> collection(Integer page, Integer perPage) {
+				return (PaginatedCollection<T, Meta>) collection;
+			};
+			
+			public <T extends Model> Repository from(java.lang.Class<T> type) {
+				return this;
+			};
+			
+			public Repository distinct() {
+				return this;
+			};
+		};
+
+		controller = new AplicacaoController(repository, result, inflector, request, Mockito.mock(QueryParser.class)){
+			@Override
+			protected Page paginate() {
+				return new Page(1, 100);
+			}
+		};
+		controller.index();
+		assertEquals("{\"coracoes\":[]}", result.serializedResult());
 	}
 }
