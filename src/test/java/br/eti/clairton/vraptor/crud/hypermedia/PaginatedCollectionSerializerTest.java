@@ -4,11 +4,8 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +13,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -126,21 +122,6 @@ public class PaginatedCollectionSerializerTest {
 		final Map<?, ?> meta = (Map<?, ?>) resultado.get("meta");
 		assertEquals(Double.valueOf("101.0"), meta.get("total"));
 		assertEquals(Double.valueOf("345.0"), meta.get("page"));
-	}
-	
-	@Test
-	public void test(){
-		List<String> string = Arrays.asList("c", "a", "b");
-		Iterator<String> iterator = string.iterator();
-//		while (iterator.hasNext()) {
-//			System.err.println(iterator.next());			
-//		}		
-		List<String> collection = Lists.newArrayList(iterator);
-		Collections.sort(collection);
-		Iterator<String> iterator2 = collection.iterator();
-		while (iterator2.hasNext()) {
-			System.err.println(iterator2.next());			
-		}		
 	}
 	
 	

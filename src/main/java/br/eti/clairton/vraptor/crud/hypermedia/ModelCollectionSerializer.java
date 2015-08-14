@@ -56,7 +56,7 @@ public class ModelCollectionSerializer extends HypermediableCollectionSerializer
 	
 	@Override
 	protected Boolean isResource(final Collection<Model> src) {
-		return (!src.isEmpty() && Model.class.isInstance(getFirst(src))) && super.isResource(src);
+		return (!src.isEmpty() && Model.class.isInstance(getFirst(src))) && getRootTag(getFirst(src)).equals(getResource());
 	}
 
 	@Override
