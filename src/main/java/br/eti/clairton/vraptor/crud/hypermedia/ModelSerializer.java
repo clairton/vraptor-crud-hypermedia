@@ -40,13 +40,13 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public String getResource() {
-				return ModelSerializer.this.getResource();
+			public String getResource(final Model src) {
+				return ModelSerializer.this.getResource(src);
 			}
 
 			@Override
-			public String getOperation() {
-				return ModelSerializer.this.getOperation();
+			public String getOperation(final Model src) {
+				return ModelSerializer.this.getOperation(src);
 			}
 			
 			@Override
@@ -69,18 +69,18 @@ public class ModelSerializer extends br.eti.clairton.vraptor.crud.serializer.Mod
 	}
 
 	@Override
-	public String getResource() {
-		return hypermediable.getResource();
+	public String getResource(final Model src) {
+		return hypermediable.getResource(src);
 	}
 
 	@Override
-	public String getOperation() {
-		return hypermediable.getOperation();
+	public String getOperation(final Model src) {
+		return hypermediable.getOperation(src);
 	}
 
 	@Override
-	public String getRootTagCollection(Collection<Model> collection) {
-		return inflector.pluralize(getResource());
+	public String getRootTagCollection(final Collection<Model> collection) {
+		return inflector.pluralize(getResource(collection));
 	}
 
 	@Override

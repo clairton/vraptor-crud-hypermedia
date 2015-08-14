@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.eti.clairton</groupId>
 	<artifactId>vraptor-crud-hypermedia</artifactId>
-	<version>0.4.5</version>
+	<version>0.5.0</version>
 	<url>https://github.com/clairton/vraptor-crud-hypermedia</url>
 	<scm>
 		<connection>scm:git:git@github.com:clairton/vraptor-crud-hypermedia.git</connection>
@@ -65,13 +65,13 @@
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>vraptor-crud</artifactId>
-			<version>0.7.2</version>
+			<version>0.8.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>gson-hypermedia</artifactId>
-			<version>0.4.0</version>
+			<version>0.5.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

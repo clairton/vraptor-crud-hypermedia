@@ -16,6 +16,7 @@ import br.eti.clairton.gson.hypermedia.HypermediablePaginatedCollectionSerialize
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.paginated.collection.Meta;
 import br.eti.clairton.paginated.collection.PaginatedCollection;
+import br.eti.clairton.paginated.collection.PaginatedMetaList;
 import br.eti.clairton.repository.Model;
 
 /**
@@ -24,7 +25,7 @@ import br.eti.clairton.repository.Model;
 @Priority(1000)
 public class ModelPaginatedSerializer extends HypermediablePaginatedCollectionSerializer<Model, Meta> implements JsonSerializer<PaginatedCollection<Model, Meta>>, Serializable {
 	private static final long serialVersionUID = 1L;
-	private final Hypermediable<Model> hypermediable;
+	private final Hypermediable<PaginatedCollection<Model, Meta>> hypermediable;
 	private final Inflector inflector;
 
 	@Deprecated
@@ -34,7 +35,7 @@ public class ModelPaginatedSerializer extends HypermediablePaginatedCollectionSe
 	
 	@Inject
 	public ModelPaginatedSerializer(final Inflector inflector) {
-		hypermediable = new DefaultHypermediable<Model>();	
+		hypermediable = new DefaultHypermediable<>();	
 		this.inflector = inflector;	
 	}
 	
@@ -44,17 +45,17 @@ public class ModelPaginatedSerializer extends HypermediablePaginatedCollectionSe
 	}
 
 	@Override
-	public String getResource() {
-		return hypermediable.getResource();
+	public String getResource(final PaginatedCollection<Model, Meta> src) {
+		return hypermediable.getResource(src);
 	}
 
 	@Override
-	public String getOperation() {
-		return hypermediable.getOperation();
+	public String getOperation(final PaginatedCollection<Model, Meta> src) {
+		return hypermediable.getOperation(src);
 	}
 
 	@Override
 	public String getRootTagCollection(Collection<Model> collection) {
-		return inflector.pluralize(getResource());
+		return inflector.pluralize(getResource(new PaginatedMetaList<>(collection, null)));
 	}
 }

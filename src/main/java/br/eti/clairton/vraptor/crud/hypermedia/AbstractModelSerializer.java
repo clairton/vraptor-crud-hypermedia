@@ -25,7 +25,7 @@ public abstract class AbstractModelSerializer<T extends Model> extends Hypermedi
 	}
 
 	@Override
-	public String getRootTagCollection(Collection<T> collection) {
-		return inflector.pluralize(getResource());
+	public String getRootTagCollection(final Collection<T> src) {
+		return inflector.pluralize(getResource(src));
 	}
 }

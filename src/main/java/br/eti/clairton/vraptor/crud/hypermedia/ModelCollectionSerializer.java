@@ -21,9 +21,9 @@ import br.eti.clairton.vraptor.crud.serializer.Resourceable;
 import br.eti.clairton.vraptor.crud.serializer.TagableExtractor;
 
 @Priority(0)
-public class ModelCollectionSerializer extends HypermediableCollectionSerializer<Model> implements JsonSerializer<Collection<Model>>, HypermediableCollection<Model>, Serializable, Resourceable {
+public class ModelCollectionSerializer extends HypermediableCollectionSerializer<Model> implements JsonSerializer<Collection<Model>>, HypermediableCollection<Model>, Serializable, Resourceable<Collection<Model>> {
 	private static final long serialVersionUID = 1L;
-	private final Hypermediable<Model> hypermediable;
+	private final Hypermediable<Collection<Model>> hypermediable;
 	private final Inflector inflector;
 
 	@Deprecated
@@ -44,28 +44,34 @@ public class ModelCollectionSerializer extends HypermediableCollectionSerializer
 		return Model.class;
 	}
 
-	@Override
-	public String getResource() {
-		return hypermediable.getResource();
-	}
+//	@Override
+//	public String getResource(final Collection<Model> src) {
+//		return hypermediable.getResource(src);
+//	}
 
 	@Override
-	public String getOperation() {
-		return hypermediable.getOperation();
+	public String getOperation(final Collection<Model> src) {
+		return hypermediable.getOperation(src);
 	}
 	
 	@Override
 	protected Boolean isResource(final Collection<Model> src) {
-		return (!src.isEmpty() && Model.class.isInstance(getFirst(src))) && getRootTag(getFirst(src)).equals(getResource());
+		return (!src.isEmpty() && Model.class.isInstance(getFirst(src))) && getRootTag(getFirst(src)).equals(getResource(src));
 	}
 
 	@Override
-	public String getRootTagCollection(Collection<Model> collection) {
-		return inflector.pluralize(getResource());
+	public String getRootTagCollection(Collection<Model> src) {
+		return inflector.pluralize(getResource(src));
 	}
 
 	@Override
 	public JsonElement serialize(final Collection<Model> src, final Type type, final JsonSerializationContext context) {
 		return super.serialize(src, type, context);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public String getResource(@SuppressWarnings("rawtypes") Collection src) {
+		return hypermediable.getResource(src);
 	}
 }

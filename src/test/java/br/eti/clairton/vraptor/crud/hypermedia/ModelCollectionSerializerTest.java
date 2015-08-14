@@ -95,11 +95,13 @@ public class ModelCollectionSerializerTest {
 			return tag;
 		}
 		
-		public String getOperation() {
+		@Override
+		public String getOperation(final Model src) {
 			return tag;
 		};
 		
-		public String getResource() {
+		@Override
+		public String getResource(final Model src) {
 			return tag;
 		};
 	};
@@ -114,11 +116,12 @@ public class ModelCollectionSerializerTest {
 		}
 		
 		@Override
-		public String getResource() {
+		public String getResource(@SuppressWarnings("rawtypes") final Collection src) {
 			return tag;
 		}
 		
-		public String getOperation() {
+		@Override
+		public String getOperation(final Collection<Model> src) {
 			return tag;
 		};
 	};
@@ -132,11 +135,11 @@ public class ModelCollectionSerializerTest {
 		}
 		
 		@Override
-		public String getResource() {
+		public String getResource(final PaginatedCollection<Model, Meta> src) {
 			return tag;
 		}
 		
-		public String getOperation() {
+		public String getOperation(final PaginatedCollection<Model, Meta> src) {
 			return tag;
 		};
 	};

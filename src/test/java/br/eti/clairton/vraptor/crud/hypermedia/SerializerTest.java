@@ -53,12 +53,12 @@ public class SerializerTest {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public String getResource() {
+			public String getResource(final TestModel src) {
 				return "testModel";
 			}
 			
 			@Override
-			public String getOperation() {
+			public String getOperation(final TestModel src) {
 				return "tanto faz";
 			}
 		});
