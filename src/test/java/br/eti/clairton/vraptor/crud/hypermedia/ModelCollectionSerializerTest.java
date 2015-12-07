@@ -147,7 +147,7 @@ public class ModelCollectionSerializerTest {
 	private final Instance<JsonDeserializer<?>> jsonDeserializers = new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>());
 	
 	private String nome = "Nome da Aplicação Número: " +  new Date().getTime();
-	private Repository repository = new Repository(null, null, null, null){
+	private Repository repository = new Repository(null, null, null){
 		private static final long serialVersionUID = 1L;
 		private final Aplicacao aplicacao = new Aplicacao(nome);
 		private final PaginatedCollection<Model, Meta> collection = new PaginatedMetaList<>(Arrays.asList(aplicacao), new Meta(1l, 100l));
