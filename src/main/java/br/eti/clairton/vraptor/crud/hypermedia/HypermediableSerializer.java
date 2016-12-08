@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.jpa.serializer.Nodes;
+import br.eti.clairton.jpa.serializer.NodesProgramatic;
 
 
 public abstract class HypermediableSerializer<T> extends br.eti.clairton.gson.hypermedia.HypermediableSerializer<T> implements HypermediableResourceable<T> {
@@ -15,7 +16,7 @@ public abstract class HypermediableSerializer<T> extends br.eti.clairton.gson.hy
 	private final HypermediableResourceable<T> hypermediable;
 
 	public HypermediableSerializer(final HypermediableRule navigator, final EntityManager em, final Inflector inflector) {
-		this(new Nodes(), navigator, em, inflector);
+		this(new NodesProgramatic(), navigator, em, inflector);
 	}
 	
 	public HypermediableSerializer(final Nodes nodes, final HypermediableRule navigator, @NotNull final EntityManager em, @NotNull final Inflector inflector) {

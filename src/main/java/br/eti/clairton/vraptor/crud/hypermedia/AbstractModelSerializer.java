@@ -8,6 +8,7 @@ import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
 import br.eti.clairton.jpa.serializer.Nodes;
+import br.eti.clairton.jpa.serializer.NodesProgramatic;
 import br.eti.clairton.repository.Model;
 
 public abstract class AbstractModelSerializer<T extends Model> extends HypermediableSerializer<T> implements Hypermediable<T>{
@@ -25,7 +26,7 @@ public abstract class AbstractModelSerializer<T extends Model> extends Hypermedi
 	}
 	
 	public AbstractModelSerializer(final HypermediableRule navigator, final Inflector inflector, final EntityManager em) {
-		this(new Nodes(), navigator, inflector, em);
+		this(new NodesProgramatic(), navigator, inflector, em);
 	}
 
 	@Override
