@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.eti.clairton</groupId>
 	<artifactId>vraptor-crud-hypermedia</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<url>https://github.com/clairton/vraptor-crud-hypermedia</url>
 	<scm>
 		<connection>scm:git:git@github.com:clairton/vraptor-crud-hypermedia.git</connection>
@@ -59,25 +59,25 @@
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>jpa-serializer</artifactId>
-			<version>1.0.0</version>
+			<version>1.2.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>vraptor-crud</artifactId>
-			<version>0.8.2</version>
+			<version>2.6.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>gson-hypermedia</artifactId>
-			<version>1.0.0</version>
+			<version>1.1.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
-			<artifactId>repository-vraptor</artifactId>
-			<version>1.0.0</version>
+			<artifactId>repository-http</artifactId>
+			<version>1.2.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -89,12 +89,24 @@
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>security</artifactId>
-			<version>1.0.0</version>
+			<version>2.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
 			<artifactId>repository</artifactId>
+			<version>2.9.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.eti.clairton</groupId>
+			<artifactId>tenant</artifactId>
+			<version>1.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.eti.clairton</groupId>
+			<artifactId>repository-tenant</artifactId>
 			<version>1.0.0</version>
 			<scope>provided</scope>
 		</dependency>
@@ -191,7 +203,7 @@
 		<dependency>
 			<groupId>br.com.caelum.vraptor</groupId>
 			<artifactId>vraptor-test</artifactId>
-			<version>4.0.0</version>
+			<version>4.1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

@@ -48,6 +48,8 @@ import br.eti.clairton.security.Lock;
 import br.eti.clairton.security.LockInMemory;
 import br.eti.clairton.security.Locksmith;
 import br.eti.clairton.security.LocksmithInMemory;
+import br.eti.clairton.security.Service;
+import br.eti.clairton.security.ServiceInMemory;
 import br.eti.clairton.security.Token;
 import br.eti.clairton.security.User;
 
@@ -105,6 +107,11 @@ public class Producer {
 	@Produces
 	public Cache getCache() {
 		return Mockito.mock(Cache.class);
+	}
+
+	@Produces
+	public Service getService(@Default Lock lock) {
+		return new ServiceInMemory(lock);
 	}
 
 	@Produces

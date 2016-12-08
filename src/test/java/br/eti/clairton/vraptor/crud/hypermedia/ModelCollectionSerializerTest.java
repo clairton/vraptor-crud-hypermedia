@@ -44,8 +44,8 @@ import br.eti.clairton.paginated.collection.PaginatedCollection;
 import br.eti.clairton.paginated.collection.PaginatedMetaList;
 import br.eti.clairton.repository.Model;
 import br.eti.clairton.repository.Repository;
-import br.eti.clairton.repository.vraptor.Page;
-import br.eti.clairton.repository.vraptor.QueryParser;
+import br.eti.clairton.repository.http.Page;
+import br.eti.clairton.repository.http.QueryParser;
 import br.eti.clairton.vraptor.crud.GsonBuilderWrapper;
 import br.eti.clairton.vraptor.crud.GsonJSONSerialization;
 import br.eti.clairton.vraptor.crud.controller.CrudController;
@@ -147,22 +147,22 @@ public class ModelCollectionSerializerTest {
 	private final Instance<JsonDeserializer<?>> jsonDeserializers = new MockInstanceImpl<>(new ArrayList<JsonDeserializer<?>>());
 	
 	private String nome = "Nome da Aplicação Número: " +  new Date().getTime();
-	private Repository repository = new Repository(null, null, null){
+	private Repository repository = new Repository(null){
 		private static final long serialVersionUID = 1L;
 		private final Aplicacao aplicacao = new Aplicacao(nome);
 		private final PaginatedCollection<Model, Meta> collection = new PaginatedMetaList<>(Arrays.asList(aplicacao), new Meta(1l, 100l));
 		
 		@SuppressWarnings("unchecked")
-		public <T extends Model, Y> T byId(@NotNull final Class<T> klass, @NotNull final Y id) throws NoResultException {
+		public <T, Y> T byId(@NotNull final Class<T> klass, @NotNull final Y id) throws NoResultException {
 			return (T) aplicacao;
 		}
 		
 		@SuppressWarnings("unchecked")
-		public <T extends Model> br.eti.clairton.paginated.collection.PaginatedCollection<T,Meta> collection(Integer page, Integer perPage) {
+		public <T> br.eti.clairton.paginated.collection.PaginatedCollection<T,Meta> collection(Integer page, Integer perPage) {
 			return (PaginatedCollection<T, Meta>) collection;
 		};
 		
-		public <T extends Model> Repository from(java.lang.Class<T> type) {
+		public <T> Repository from(java.lang.Class<T> type) {
 			return this;
 		};
 		

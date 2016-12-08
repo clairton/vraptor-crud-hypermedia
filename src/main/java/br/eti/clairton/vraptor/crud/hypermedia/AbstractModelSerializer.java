@@ -3,11 +3,11 @@ package br.eti.clairton.vraptor.crud.hypermedia;
 import java.util.Collection;
 
 import javax.persistence.EntityManager;
-import javax.validation.constraints.NotNull;
 
 import br.eti.clairton.gson.hypermedia.Hypermediable;
 import br.eti.clairton.gson.hypermedia.HypermediableRule;
 import br.eti.clairton.inflector.Inflector;
+import br.eti.clairton.jpa.serializer.Nodes;
 import br.eti.clairton.repository.Model;
 
 public abstract class AbstractModelSerializer<T extends Model> extends HypermediableSerializer<T> implements Hypermediable<T>{
@@ -19,9 +19,13 @@ public abstract class AbstractModelSerializer<T extends Model> extends Hypermedi
 		this(null, null, null);
 	}
 
-	public AbstractModelSerializer(@NotNull final HypermediableRule navigator, @NotNull final Inflector inflector, @NotNull final EntityManager em) {
-		super(navigator, em, inflector);
+	public AbstractModelSerializer(final Nodes nodes,final HypermediableRule navigator, final Inflector inflector, final EntityManager em) {
+		super(nodes, navigator, em, inflector);
 		this.inflector = inflector;
+	}
+	
+	public AbstractModelSerializer(final HypermediableRule navigator, final Inflector inflector, final EntityManager em) {
+		this(new Nodes(), navigator, inflector, em);
 	}
 
 	@Override
