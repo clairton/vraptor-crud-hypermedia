@@ -34,12 +34,6 @@
 		</dependency>
 		<dependency>
 			<groupId>br.eti.clairton</groupId>
-			<artifactId>tenant</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>br.eti.clairton</groupId>
 			<artifactId>identificator</artifactId>
 			<version>1.0.0</version>
 			<scope>provided</scope>
